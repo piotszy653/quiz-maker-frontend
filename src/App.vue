@@ -1,28 +1,38 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app id="app">
+    <router-view @login="handleLogin" @tokenExpired="handleTokenExpired"/>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import axios from 'axios'
 
 export default {
   name: 'app',
-  components: {
-    HelloWorld
+  methods: {
+    handleLogin (user) {
+      localStorage.setItem('access_token', user.token)
+      axios.defaults.headers['Authorization'] = `Bearer ${localStorage.getItem('access_token')}`
+      localStorage.setItem('username', user.username)
+      this.$router.push('/dashboard')
+    },
+    handleDashboard () {
+      this.$router.push('/dashboard')
+    },
+    handleTokenExpired () {
+      this.$router.push('/login')
+    }
   }
 }
 </script>
+>
 
-<style>
+<style lang="scss">
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

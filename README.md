@@ -1,4 +1,4 @@
-# quiz-maker-frontend
+# QuizMaker
 
 ## Project setup
 ```
