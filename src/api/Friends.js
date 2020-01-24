@@ -32,7 +32,6 @@ export async function fetchInvitingUsers () {
 }
 
 export async function removeFriend (uuid) {
-  alert(usersUrl + '/remove-friend/' + uuid)
   try {
     await axios.put(usersUrl + '/remove-friend/' + uuid)
   } catch (error) {
@@ -52,11 +51,9 @@ export async function invite (uuid) {
 export async function resolveInvitation (accepted, uuid) {
   try {
     if (accepted) {
-      alert(invitationUrl + '/accept/' + uuid)
       await axios.put(invitationUrl + '/accept/' + uuid)
       alert('invitation accepted')
     } else {
-      alert(invitationUrl + '/decline/' + uuid)
       await axios.delete(invitationUrl + '/decline/' + uuid)
       alert('invitaiton declined')
     }

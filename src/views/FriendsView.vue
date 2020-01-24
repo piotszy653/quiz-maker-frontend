@@ -122,14 +122,12 @@ export default {
     },
     handleRemoveFriend (uuid) {
       removeFriend(uuid)
-      this.$router.go()
     },
     handleInvite (uuid) {
       invite(uuid)
     },
     handleInvitation (accepted, uuid) {
       resolveInvitation(accepted, uuid)
-      this.$router.go()
     }
   },
   async created () {
