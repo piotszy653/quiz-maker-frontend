@@ -31,9 +31,19 @@ export async function fetchInvitingUsers () {
   }
 }
 
+export async function fetchInvitedUsers () {
+  try {
+    const response = await axios.get(usersUrl + '/invited-users')
+    return response.data
+  } catch (error) {
+    errorHandling(error)
+  }
+}
+
 export async function removeFriend (uuid) {
   try {
     await axios.put(usersUrl + '/remove-friend/' + uuid)
+    alert('friend removed')
   } catch (error) {
     errorHandling(error)
   }
@@ -43,6 +53,15 @@ export async function invite (uuid) {
   try {
     await axios.post(invitationUrl + '/' + uuid)
     alert('user invited')
+  } catch (error) {
+    errorHandling(error)
+  }
+}
+
+export async function removeInvitation (uuid) {
+  try {
+    await axios.delete(invitationUrl + '/' + uuid)
+    alert('invitation deleted')
   } catch (error) {
     errorHandling(error)
   }

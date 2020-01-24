@@ -42,7 +42,33 @@
             </v-list>
           </v-tab-item>
           <v-tab-item>
+              <v-list v-if="invitedUsers">
+            <v-subheader>Invited users</v-subheader>
+              <v-list-tile v-for="invitedUser in this.invitedUsers" :key="invitedUser.username">
+                <v-list-tile-content>
+                    <b>{{invitedUser.profile.name}}</b> {{ invitedUser.username }}
+                </v-list-tile-content>
+                <v-spacer/>
+                <v-list-tile-content>
+                  <v-btn
+                    small
+                    color="red"
+                    dark
+                    @click="handleRemoveInvitation(invitedUser.uuid)" v-bind="$attrs"
+                  >Delete</v-btn>
+                </v-list-tile-content>
+                <v-spacer/>
+                <v-list-tile-content>
+                  <v-btn
+                    small
+                    color="white"
+                    flat
+                  ></v-btn>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list>
             <v-list v-if="invitingUsers">
+            <v-subheader>Inviting users</v-subheader>
               <v-list-tile v-for="invitingUser in this.invitingUsers" :key="invitingUser.username">
                 <v-list-tile-content>
                     <b>{{invitingUser.profile.name}}</b> {{ invitingUser.username }}
@@ -53,7 +79,7 @@
                     small
                     color="green"
                     dark
-                    @click="handleInvitation(true, invitingUser.uuid)" v-bind="$attrs"
+                    @click="handleResolveInvitation(true, invitingUser.uuid)" v-bind="$attrs"
                   >Accept</v-btn>
                 </v-list-tile-content>
                 <v-spacer/>
@@ -62,7 +88,7 @@
                     small
                     color="red"
                     dark
-                    @click="handleInvitation(false, invitingUser.uuid)" v-bind="$attrs"
+                    @click="handleResolveInvitation(false, invitingUser.uuid)" v-bind="$attrs"
                   >Decline</v-btn>
                 </v-list-tile-content>
               </v-list-tile>
@@ -102,7 +128,8 @@
 
 <script>
 import LinkButton from '@/components/LinkButton.vue'
-import { fetchFriends, fetchUsers, fetchInvitingUsers, removeFriend, invite, resolveInvitation } from '@/api/Friends'
+import { fetchFriends, fetchUsers, fetchInvitingUsers, fetchInvitedUsers,
+  removeFriend, invite, resolveInvitation, removeInvitation } from '@/api/Friends'
 import { sortUsers } from '@/utils/Sort'
 export default {
   name: 'Friends',
@@ -110,7 +137,8 @@ export default {
     return {
       friends: [],
       users: [],
-      invitingUsers: []
+      invitingUsers: [],
+      invitedUsers: []
     }
   },
   components: {
@@ -126,8 +154,11 @@ export default {
     handleInvite (uuid) {
       invite(uuid)
     },
-    handleInvitation (accepted, uuid) {
+    handleResolveInvitation (accepted, uuid) {
       resolveInvitation(accepted, uuid)
+    },
+    handleRemoveInvitation (uuid) {
+      removeInvitation(uuid)
     }
   },
   async created () {
@@ -138,6 +169,8 @@ export default {
       this.users = sortUsers(this.users)
       this.invitingUsers = await fetchInvitingUsers()
       this.invitingUsers = sortUsers(this.invitingUsers)
+      this.invitedUsers = await fetchInvitedUsers()
+      this.invitedUsers = sortUsers(this.invitedUsers)
     } catch (error) {
       console.log('error', error)
       alert(error)
