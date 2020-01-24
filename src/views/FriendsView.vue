@@ -9,50 +9,108 @@
           <v-btn @click="handleLogout" color="red" flat>Log out</v-btn>
         </v-toolbar-items>
       </v-toolbar>
-      <v-list v-if="friends">
-              <v-list-tile v-for="friend in this.friends" :key="friend.id">
-                <v-list-tile-content>{{friend.username}}</v-list-tile-content>
 
-                <!-- <v-list-tile-content>
+      <v-tabs dark centered hide-slider grow>
+          <v-tab class="gradient">Friends</v-tab>
+          <v-tab class="gradient">Invitations</v-tab>
+          <v-tab class="gradient">Others</v-tab>
+          <v-tab-item>
+            <v-list v-if="friends">
+              <v-list-tile v-for="friend in this.friends" :key="friend.username">
+                <v-list-tile-content>
+                    <b>{{friend.profile.name}}</b> {{ friend.username }}
+                </v-list-tile-content>
+                <v-spacer/>
+                <v-list-tile-content>
                   <LinkButton
-                  :url="'/productDetails/'+ product.id"
+                  :url="'/quizzes/'+ friend.uuid"
                     small
                     color="blue"
                     dark
-                  >Details</LinkButton>
+                  >Quizzes</LinkButton>
                 </v-list-tile-content>
-
-                <v-list-tile-content>
-                  <LinkButton
-                  :url="'/product/'+ product.id"
-                    small
-                    color="green"
-                    dark
-                  >Update</LinkButton>
-                </v-list-tile-content>
-
+                <v-spacer/>
                 <v-list-tile-content>
                   <v-btn
                     small
                     color="red"
                     dark
-                    @click="handleDelete(product.id)" v-bind="$attrs"
-                  >Delete</v-btn>
-                </v-list-tile-content> -->
+                    @click="handleRemoveFriend(friend.uuid)" v-bind="$attrs"
+                  >Remove</v-btn>
+                </v-list-tile-content>
               </v-list-tile>
             </v-list>
+          </v-tab-item>
+          <v-tab-item>
+            <v-list v-if="invitingUsers">
+              <v-list-tile v-for="invitingUser in this.invitingUsers" :key="invitingUser.username">
+                <v-list-tile-content>
+                    <b>{{invitingUser.profile.name}}</b> {{ invitingUser.username }}
+                </v-list-tile-content>
+                <v-spacer/>
+                <v-list-tile-content>
+                  <v-btn
+                    small
+                    color="green"
+                    dark
+                    @click="handleInvitation(true, invitingUser.uuid)" v-bind="$attrs"
+                  >Accept</v-btn>
+                </v-list-tile-content>
+                <v-spacer/>
+                <v-list-tile-content>
+                  <v-btn
+                    small
+                    color="red"
+                    dark
+                    @click="handleInvitation(false, invitingUser.uuid)" v-bind="$attrs"
+                  >Decline</v-btn>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list>
+          </v-tab-item>
+          <v-tab-item>
+            <v-list v-if="users">
+              <v-list-tile v-for="user in this.users" :key="user.username">
+                <v-list-tile-content>
+                    <b>{{user.profile.name}}</b> {{ user.username }}
+                </v-list-tile-content>
+                <v-spacer/>
+                <v-list-tile-content>
+                  <LinkButton
+                  :url="'/quizzes/'+ user.uuid"
+                    small
+                    color="blue"
+                    dark
+                  >Quizzes</LinkButton>
+                </v-list-tile-content>
+                <v-spacer/>
+                <v-list-tile-content>
+                  <v-btn
+                    small
+                    color="green"
+                    dark
+                    @click="handleInvite(user.uuid)" v-bind="$attrs"
+                  >Invite</v-btn>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list>
+          </v-tab-item>
+        </v-tabs>
     </v-card>
     </v-flex>
 </template>
 
 <script>
 import LinkButton from '@/components/LinkButton.vue'
-import { fetchFriends } from '@/api/Friends'
+import { fetchFriends, fetchUsers, fetchInvitingUsers, removeFriend, invite, resolveInvitation } from '@/api/Friends'
+import { sortUsers } from '@/utils/Sort'
 export default {
   name: 'Friends',
   data () {
     return {
-      friends: []
+      friends: [],
+      users: [],
+      invitingUsers: []
     }
   },
   components: {
@@ -61,11 +119,27 @@ export default {
   methods: {
     handleLogout () {
       this.$emit('logout')
+    },
+    handleRemoveFriend (uuid) {
+      removeFriend(uuid)
+      this.$router.go()
+    },
+    handleInvite (uuid) {
+      invite(uuid)
+    },
+    handleInvitation (accepted, uuid) {
+      resolveInvitation(accepted, uuid)
+      this.$router.go()
     }
   },
   async created () {
     try {
       this.friends = await fetchFriends()
+      this.friends = sortUsers(this.friends)
+      this.users = await fetchUsers()
+      this.users = sortUsers(this.users)
+      this.invitingUsers = await fetchInvitingUsers()
+      this.invitingUsers = sortUsers(this.invitingUsers)
     } catch (error) {
       console.log('error', error)
       alert(error)
@@ -74,4 +148,8 @@ export default {
 }
 </script>
 <style>
+
+.gradient {
+    background-image: linear-gradient(-50deg, #070849c4, #070849);
+}
 </style>
