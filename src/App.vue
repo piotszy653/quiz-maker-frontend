@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <router-view @login="handleLogin" @tokenExpired="handleTokenExpired"/>
+    <router-view @login="handleLogin" @logout="handleLogout" @tokenExpired="handleTokenExpired"/>
   </v-app>
 </template>
 
@@ -10,6 +10,12 @@ import axios from 'axios'
 export default {
   name: 'app',
   methods: {
+    handleLogout () {
+      localStorage.removeItem('username')
+      localStorage.removeItem('access_token')
+      axios.defaults.headers['Authorization'] = null
+      this.$router.push('/login')
+    },
     handleLogin (user) {
       localStorage.setItem('access_token', user.token)
       axios.defaults.headers['Authorization'] = `Bearer ${localStorage.getItem('access_token')}`
