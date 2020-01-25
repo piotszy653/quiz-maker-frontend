@@ -39,10 +39,10 @@
 
 <script>
 import LinkButton from '@/components/LinkButton.vue'
-import FriendsListTiles from '@/views/Friends/FriendsListTiles'
-import InvitedUsersListTiles from '@/views/Friends/InvitedUsersListTiles'
-import InvitingUsersListTiles from '@/views/Friends/InvitingUsersListTiles'
-import UsersListTiles from '@/views/Friends/UsersListTiles'
+import FriendsListTiles from './friends/FriendsListTiles'
+import InvitedUsersListTiles from './friends/InvitedUsersListTiles'
+import InvitingUsersListTiles from './friends/InvitingUsersListTiles'
+import UsersListTiles from './friends/UsersListTiles'
 import { fetchFriends, fetchUsers, fetchInvitingUsers, fetchInvitedUsers } from '@/api/Friends'
 import { sortUsers } from '@/utils/Sort'
 export default {
@@ -78,8 +78,7 @@ export default {
       this.invitedUsers = await fetchInvitedUsers()
       this.invitedUsers = sortUsers(this.invitedUsers)
     } catch (error) {
-      console.log('error', error)
-      alert(error)
+      this.$emit('tokenExpired')
     }
   }
 }

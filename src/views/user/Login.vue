@@ -15,6 +15,8 @@
           ></v-text-field>
           <v-btn @click="handleSignIn" block color="primary">Sign in</v-btn>
           <p>
+            <router-link to="/forgot-password">Forgot password</router-link>
+            <br>
             New to our website?
             <router-link to="/registration">Sign up</router-link>
           </p>
@@ -25,7 +27,7 @@
 
 <script>
 import TitleContainer from '@/components/TitleContainer'
-import { handleSignIn } from '../api/Login.js'
+import { handleSignIn } from '@/api/Login.js'
 export default {
   name: 'login',
   data () {

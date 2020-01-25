@@ -84,7 +84,7 @@ export async function resolveInvitation (accepted, uuid) {
 function errorHandling (error) {
   if (error.response) {
     if (error.response.status === 401) {
-      this.$emit('tokenExpired')
+      throw error
     } else {
       console.log(error)
       alert(error.response.data.code)

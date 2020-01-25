@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Dashboard from './views/Dashboard'
-import Login from './views/Login'
-import Registration from './views/Registration'
-import Friends from './views/FriendsView'
+import Login from './views/user/Login'
+import Registration from './views/user/Registration'
+import Friends from './views/user/FriendsView'
 
 Vue.use(Router)
 

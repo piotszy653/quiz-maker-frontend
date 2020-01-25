@@ -20,7 +20,7 @@
 
 <script>
 import TitleContainer from '@/components/TitleContainer.vue'
-import { handleSignUp } from '../api/Registration.js'
+import { handleSignUp } from '@/api/Registration.js'
 export default {
   name: 'Registration',
   data () {
