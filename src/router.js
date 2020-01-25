@@ -6,6 +6,7 @@ import Registration from './views/user/Registration'
 import Friends from './views/user/FriendsView'
 import ForgotPassword from './views/user/password/ForgotPasswordView'
 import ResetPassword from './views/user/password/ResetPasswordView'
+import Assessments from './views/quiz/assessment/AssessmentsView'
 
 Vue.use(Router)
 
@@ -48,6 +49,11 @@ export default new Router({
       name: 'ResetPassword',
       component: ResetPassword,
       props: true
+    },
+    {
+      path: '/assessments',
+      name: 'Assessments',
+      component: Assessments
     }
   ]
 })
