@@ -17,10 +17,13 @@
           <v-tab-item>
             <v-list v-if="friends">
               <v-list-tile v-for="friend in this.friends" :key="friend.username">
+                <v-flex xs6 sm4>
                 <v-list-tile-content>
                     <b>{{friend.profile.name}}</b> {{ friend.username }}
                 </v-list-tile-content>
+                </v-flex>
                 <v-spacer/>
+                <v-flex xs6 sm4>
                 <v-list-tile-content>
                   <LinkButton
                   :url="'/quizzes/'+ friend.uuid"
@@ -29,7 +32,9 @@
                     dark
                   >Quizzes</LinkButton>
                 </v-list-tile-content>
+                </v-flex>
                 <v-spacer/>
+                <v-flex xs6 sm4>
                 <v-list-tile-content>
                   <v-btn
                     small
@@ -38,6 +43,7 @@
                     @click="handleRemoveFriend(friend.uuid)" v-bind="$attrs"
                   >Remove</v-btn>
                 </v-list-tile-content>
+                </v-flex>
               </v-list-tile>
             </v-list>
           </v-tab-item>
@@ -45,10 +51,12 @@
               <v-list v-if="invitedUsers">
             <v-subheader>Invited users</v-subheader>
               <v-list-tile v-for="invitedUser in this.invitedUsers" :key="invitedUser.username">
+                <v-flex xs6 sm4>
                 <v-list-tile-content>
                     <b>{{invitedUser.profile.name}}</b> {{ invitedUser.username }}
                 </v-list-tile-content>
-                <v-spacer/>
+                </v-flex>
+                <v-flex xs6 sm4>
                 <v-list-tile-content>
                   <v-btn
                     small
@@ -57,23 +65,19 @@
                     @click="handleRemoveInvitation(invitedUser.uuid)" v-bind="$attrs"
                   >Delete</v-btn>
                 </v-list-tile-content>
-                <v-spacer/>
-                <v-list-tile-content>
-                  <v-btn
-                    small
-                    color="white"
-                    flat
-                  ></v-btn>
-                </v-list-tile-content>
+                </v-flex>
               </v-list-tile>
             </v-list>
             <v-list v-if="invitingUsers">
-            <v-subheader>Inviting users</v-subheader>
+              <v-subheader>Inviting users</v-subheader>
               <v-list-tile v-for="invitingUser in this.invitingUsers" :key="invitingUser.username">
+                <v-flex xs6 sm4>
                 <v-list-tile-content>
                     <b>{{invitingUser.profile.name}}</b> {{ invitingUser.username }}
                 </v-list-tile-content>
+                </v-flex>
                 <v-spacer/>
+                <v-flex xs6 sm4>
                 <v-list-tile-content>
                   <v-btn
                     small
@@ -82,7 +86,9 @@
                     @click="handleResolveInvitation(true, invitingUser.uuid)" v-bind="$attrs"
                   >Accept</v-btn>
                 </v-list-tile-content>
+                </v-flex>
                 <v-spacer/>
+                <v-flex xs6 sm4>
                 <v-list-tile-content>
                   <v-btn
                     small
@@ -91,16 +97,20 @@
                     @click="handleResolveInvitation(false, invitingUser.uuid)" v-bind="$attrs"
                   >Decline</v-btn>
                 </v-list-tile-content>
+                </v-flex>
               </v-list-tile>
             </v-list>
           </v-tab-item>
           <v-tab-item>
             <v-list v-if="users">
               <v-list-tile v-for="user in this.users" :key="user.username">
+                <v-flex xs6 sm4>
                 <v-list-tile-content>
                     <b>{{user.profile.name}}</b> {{ user.username }}
                 </v-list-tile-content>
+                </v-flex>
                 <v-spacer/>
+                <v-flex xs6 sm4>
                 <v-list-tile-content>
                   <LinkButton
                   :url="'/quizzes/'+ user.uuid"
@@ -109,7 +119,9 @@
                     dark
                   >Quizzes</LinkButton>
                 </v-list-tile-content>
+                </v-flex>
                 <v-spacer/>
+                <v-flex xs6 sm4>
                 <v-list-tile-content>
                   <v-btn
                     small
@@ -118,6 +130,7 @@
                     @click="handleInvite(user.uuid)" v-bind="$attrs"
                   >Invite</v-btn>
                 </v-list-tile-content>
+                </v-flex>
               </v-list-tile>
             </v-list>
           </v-tab-item>
