@@ -4,7 +4,8 @@ import Dashboard from './views/Dashboard'
 import Login from './views/user/Login'
 import Registration from './views/user/Registration'
 import Friends from './views/user/FriendsView'
-import ForgotPassword from './views/user/ForgotPasswordView'
+import ForgotPassword from './views/user/password/ForgotPasswordView'
+import ResetPassword from './views/user/password/ResetPasswordView'
 
 Vue.use(Router)
 
@@ -41,6 +42,12 @@ export default new Router({
       path: '/forgot-password',
       name: 'ForgotPassword',
       component: ForgotPassword
+    },
+    {
+      path: '/reset-password/:token',
+      name: 'ResetPassword',
+      component: ResetPassword,
+      props: true
     }
   ]
 })

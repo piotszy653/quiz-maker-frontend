@@ -5,7 +5,7 @@
         <v-form class="form">
         <v-flex sm6 offset-sm3>
           <v-text-field v-model="mail" autofocus label="e-mail"></v-text-field>
-          <v-btn @click="handleForgotPassword(mail)" color="primary">Reset password</v-btn>
+          <v-btn @click="handleForgotPassword(mail)" color="primary">Send mail</v-btn>
         </v-flex>
         </v-form>
       </v-card>
@@ -14,7 +14,7 @@
 
 <script>
 import TitleContainer from '@/components/TitleContainer'
-import { forgotPassword } from '@/api/Password.js'
+import { handleForgotPassword } from '@/api/Password.js'
 export default {
   name: 'ForgotPassword',
   data () {
@@ -26,9 +26,7 @@ export default {
     TitleContainer
   },
   methods: {
-    handleForgotPassword (mail) {
-      forgotPassword(mail)
-    }
+    handleForgotPassword
   }
 }
 </script>
