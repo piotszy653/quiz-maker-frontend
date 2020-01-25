@@ -16,122 +16,20 @@
           <v-tab class="gradient">Others</v-tab>
           <v-tab-item>
             <v-list v-if="friends">
-              <v-list-tile v-for="friend in this.friends" :key="friend.username">
-                <v-flex xs6 sm4>
-                <v-list-tile-content>
-                    <b>{{friend.profile.name}}</b> {{ friend.username }}
-                </v-list-tile-content>
-                </v-flex>
-                <v-spacer/>
-                <v-flex xs6 sm4>
-                <v-list-tile-content>
-                  <LinkButton
-                  :url="'/quizzes/'+ friend.uuid"
-                    small
-                    color="blue"
-                    dark
-                  >Quizzes</LinkButton>
-                </v-list-tile-content>
-                </v-flex>
-                <v-spacer/>
-                <v-flex xs6 sm4>
-                <v-list-tile-content>
-                  <v-btn
-                    small
-                    color="red"
-                    dark
-                    @click="handleRemoveFriend(friend.uuid)" v-bind="$attrs"
-                  >Remove</v-btn>
-                </v-list-tile-content>
-                </v-flex>
-              </v-list-tile>
+              <FriendsListTiles v-bind:friends="friends"/>
             </v-list>
           </v-tab-item>
           <v-tab-item>
               <v-list v-if="invitedUsers">
-            <v-subheader>Invited users</v-subheader>
-              <v-list-tile v-for="invitedUser in this.invitedUsers" :key="invitedUser.username">
-                <v-flex xs6 sm4>
-                <v-list-tile-content>
-                    <b>{{invitedUser.profile.name}}</b> {{ invitedUser.username }}
-                </v-list-tile-content>
-                </v-flex>
-                <v-flex xs6 sm4>
-                <v-list-tile-content>
-                  <v-btn
-                    small
-                    color="red"
-                    dark
-                    @click="handleRemoveInvitation(invitedUser.uuid)" v-bind="$attrs"
-                  >Delete</v-btn>
-                </v-list-tile-content>
-                </v-flex>
-              </v-list-tile>
+                <InvitedUsersListTiles v-bind:invitedUsers="invitedUsers"/>
             </v-list>
             <v-list v-if="invitingUsers">
-              <v-subheader>Inviting users</v-subheader>
-              <v-list-tile v-for="invitingUser in this.invitingUsers" :key="invitingUser.username">
-                <v-flex xs6 sm4>
-                <v-list-tile-content>
-                    <b>{{invitingUser.profile.name}}</b> {{ invitingUser.username }}
-                </v-list-tile-content>
-                </v-flex>
-                <v-spacer/>
-                <v-flex xs6 sm4>
-                <v-list-tile-content>
-                  <v-btn
-                    small
-                    color="green"
-                    dark
-                    @click="handleResolveInvitation(true, invitingUser.uuid)" v-bind="$attrs"
-                  >Accept</v-btn>
-                </v-list-tile-content>
-                </v-flex>
-                <v-spacer/>
-                <v-flex xs6 sm4>
-                <v-list-tile-content>
-                  <v-btn
-                    small
-                    color="red"
-                    dark
-                    @click="handleResolveInvitation(false, invitingUser.uuid)" v-bind="$attrs"
-                  >Decline</v-btn>
-                </v-list-tile-content>
-                </v-flex>
-              </v-list-tile>
+              <InvitingUsersListTiles v-bind:invitingUsers="invitingUsers"/>
             </v-list>
           </v-tab-item>
           <v-tab-item>
             <v-list v-if="users">
-              <v-list-tile v-for="user in this.users" :key="user.username">
-                <v-flex xs6 sm4>
-                <v-list-tile-content>
-                    <b>{{user.profile.name}}</b> {{ user.username }}
-                </v-list-tile-content>
-                </v-flex>
-                <v-spacer/>
-                <v-flex xs6 sm4>
-                <v-list-tile-content>
-                  <LinkButton
-                  :url="'/quizzes/'+ user.uuid"
-                    small
-                    color="blue"
-                    dark
-                  >Quizzes</LinkButton>
-                </v-list-tile-content>
-                </v-flex>
-                <v-spacer/>
-                <v-flex xs6 sm4>
-                <v-list-tile-content>
-                  <v-btn
-                    small
-                    color="green"
-                    dark
-                    @click="handleInvite(user.uuid)" v-bind="$attrs"
-                  >Invite</v-btn>
-                </v-list-tile-content>
-                </v-flex>
-              </v-list-tile>
+              <UsersListTiles v-bind:users="users"/>
             </v-list>
           </v-tab-item>
         </v-tabs>
@@ -141,8 +39,11 @@
 
 <script>
 import LinkButton from '@/components/LinkButton.vue'
-import { fetchFriends, fetchUsers, fetchInvitingUsers, fetchInvitedUsers,
-  removeFriend, invite, resolveInvitation, removeInvitation } from '@/api/Friends'
+import FriendsListTiles from '@/views/Friends/FriendsListTiles'
+import InvitedUsersListTiles from '@/views/Friends/InvitedUsersListTiles'
+import InvitingUsersListTiles from '@/views/Friends/InvitingUsersListTiles'
+import UsersListTiles from '@/views/Friends/UsersListTiles'
+import { fetchFriends, fetchUsers, fetchInvitingUsers, fetchInvitedUsers } from '@/api/Friends'
 import { sortUsers } from '@/utils/Sort'
 export default {
   name: 'Friends',
@@ -155,23 +56,15 @@ export default {
     }
   },
   components: {
-    LinkButton
+    LinkButton,
+    FriendsListTiles,
+    InvitedUsersListTiles,
+    InvitingUsersListTiles,
+    UsersListTiles
   },
   methods: {
     handleLogout () {
       this.$emit('logout')
-    },
-    handleRemoveFriend (uuid) {
-      removeFriend(uuid)
-    },
-    handleInvite (uuid) {
-      invite(uuid)
-    },
-    handleResolveInvitation (accepted, uuid) {
-      resolveInvitation(accepted, uuid)
-    },
-    handleRemoveInvitation (uuid) {
-      removeInvitation(uuid)
     }
   },
   async created () {
@@ -192,7 +85,6 @@ export default {
 }
 </script>
 <style>
-
 .gradient {
     background-image: linear-gradient(-50deg, #070849c4, #070849);
 }
