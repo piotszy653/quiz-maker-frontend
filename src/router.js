@@ -4,6 +4,7 @@ import Dashboard from './views/Dashboard'
 import Login from './views/user/Login'
 import Registration from './views/user/Registration'
 import Friends from './views/user/FriendsView'
+import ForgotPassword from './views/user/ForgotPasswordView'
 
 Vue.use(Router)
 
@@ -35,6 +36,11 @@ export default new Router({
       path: '/friends',
       name: 'Friends',
       component: Friends
+    },
+    {
+      path: '/forgot-password',
+      name: 'ForgotPassword',
+      component: ForgotPassword
     }
   ]
 })
