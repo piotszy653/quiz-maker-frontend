@@ -11,6 +11,45 @@ export async function fetchAssessments () {
   }
 }
 
+export async function fetchAssessment (assessmentUuid) {
+  try {
+    const response = await axios.get(assessmentsUrl + '/' + assessmentUuid)
+    return response.data
+  } catch (error) {
+    errorHandling(error)
+  }
+}
+
+export async function handleUpdate (assessment, assessmentUuid) {
+  try {
+    await axios.put(assessmentsUrl + '/' + assessmentUuid, {
+      name: assessment.name,
+      correctRate: assessment.correctRate,
+      incorrectRate: assessment.incorrectRate,
+      minPoints: assessment.minPoints,
+      maxPoints: assessment.maxPoints
+    })
+    this.$router.push('/assessments')
+  } catch (error) {
+    errorHandling(error)
+  }
+}
+
+export async function handleCreate (assessment) {
+  try {
+    await axios.post(assessmentsUrl, {
+      name: assessment.name,
+      correctRate: assessment.correctRate,
+      incorrectRate: assessment.incorrectRate,
+      minPoints: assessment.minPoints,
+      maxPoints: assessment.maxPoints
+    })
+    this.$router.push('/assessments')
+  } catch (error) {
+    errorHandling(error)
+  }
+}
+
 export async function handleDeleteAssessment (uuid) {
   try {
     await axios.delete(assessmentsUrl + '/' + uuid)

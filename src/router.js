@@ -7,6 +7,7 @@ import Friends from './views/user/FriendsView'
 import ForgotPassword from './views/user/password/ForgotPasswordView'
 import ResetPassword from './views/user/password/ResetPasswordView'
 import Assessments from './views/quiz/assessment/AssessmentsView'
+import Assessment from './views/quiz/assessment/AssessmentView'
 
 Vue.use(Router)
 
@@ -54,6 +55,17 @@ export default new Router({
       path: '/assessments',
       name: 'Assessments',
       component: Assessments
+    },
+    {
+      path: '/assessment/:assessmentUuid',
+      name: 'Update Assessment',
+      component: Assessment,
+      props: true
+    },
+    {
+      path: '/assessment',
+      name: 'Create Assessment',
+      component: Assessment
     }
   ]
 })

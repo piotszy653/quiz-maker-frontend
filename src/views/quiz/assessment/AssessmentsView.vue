@@ -5,15 +5,15 @@
         <v-toolbar-title class="toolbar-title">Assessments</v-toolbar-title>
         <v-spacer/>
          <v-toolbar-items>
-          <LinkButton url="/createAssessment" color="green" flat>Add</LinkButton>
+          <LinkButton url="/assessment" color="green" flat>Add</LinkButton>
           <LinkButton url="/dashboard" color="primary" flat>Main</LinkButton>
           <v-btn @click="handleLogout" color="red" flat>Log out</v-btn>
         </v-toolbar-items>
       </v-toolbar>
 
-      <v-list class="list" v-if="assessments">
+      <v-list v-if="assessments">
           <v-list-tile class="list-tile" v-for="assessment in this.assessments" :key="assessment.uuid">
-            <v-flex xs2>
+            <v-flex xs3>
             <v-list-tile-content>
                 <b>{{assessment.name}}</b>
             </v-list-tile-content>
@@ -37,7 +37,7 @@
             <v-spacer/>
             <v-flex xs2>
             <v-list-tile-content>
-              <LinkButton small dark color="green" url="/createAssessment">update</LinkButton>
+              <LinkButton small dark color="green" :url=" '/assessment/' + assessment.uuid">update</LinkButton>
             </v-list-tile-content>
             <v-list-tile-content>
                 <v-btn
@@ -77,6 +77,7 @@ export default {
   async created () {
     try {
       this.assessments = await fetchAssessments()
+      this.assessments = this.assessments.sort((a, b) => a.creationTime < b.creationTime ? -1 : 1)
     } catch (error) {
       this.$emit('tokenExpired')
     }
@@ -86,9 +87,6 @@ export default {
 <style>
 .gradient {
     background-image: linear-gradient(-50deg, #070849c4, #070849);
-}
-.list {
-    margin: 3%
 }
 .list-tile {
     margin: 8%
