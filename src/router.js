@@ -8,6 +8,7 @@ import ForgotPassword from './views/user/password/ForgotPasswordView'
 import ResetPassword from './views/user/password/ResetPasswordView'
 import Assessments from './views/quiz/assessment/AssessmentsView'
 import Assessment from './views/quiz/assessment/AssessmentView'
+import Quizzes from './views/quiz/QuizzesView'
 
 Vue.use(Router)
 
@@ -66,6 +67,11 @@ export default new Router({
       path: '/assessment',
       name: 'Create Assessment',
       component: Assessment
+    },
+    {
+      path: '/quizzes',
+      name: 'Quizzes',
+      component: Quizzes
     }
   ]
 })
