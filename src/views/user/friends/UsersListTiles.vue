@@ -3,7 +3,7 @@
   <v-list-tile v-for="user in this.users" :key="user.username">
     <v-flex xs6 sm4>
     <v-list-tile-content>
-        <b>{{user.profile.name}}</b> {{ user.username }}
+        <b>{{user.username}}</b>
     </v-list-tile-content>
     </v-flex>
     <v-spacer/>

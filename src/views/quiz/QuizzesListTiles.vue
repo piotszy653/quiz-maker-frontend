@@ -1,31 +1,32 @@
 <template>
 <div>
-<v-list-tile v-for="friend in this.friends" :key="friend.username">
+<v-list-tile class="list-tile" v-for="quiz in this.quizzes" :key="quiz.uuid">
   <v-flex xs6 sm4>
   <v-list-tile-content>
-      <b>{{friend.username}}</b>
+      <b>{{quiz.name}}</b>
+      Author: {{quiz.ownerUsername.split('@')[0]}}
+  </v-list-tile-content>
+  </v-flex>
+  <v-spacer/>
+  <v-flex xs6 sm4>
+  <v-list-tile-content>
+    <LinkButton v-if="myQuizzes"
+    :url="'/quiz/'+ quiz.uuid"
+      small
+      color="green"
+      dark
+    >Edit</LinkButton>
   </v-list-tile-content>
   </v-flex>
   <v-spacer/>
   <v-flex xs6 sm4>
   <v-list-tile-content>
     <LinkButton
-    :url="'/quizzes/'+ friend.uuid"
       small
-      color="blue"
+      color="primary"
       dark
-    >Quizzes</LinkButton>
-  </v-list-tile-content>
-  </v-flex>
-  <v-spacer/>
-  <v-flex xs6 sm4>
-  <v-list-tile-content>
-    <v-btn
-      small
-      color="red"
-      dark
-      @click="handleRemoveFriend(friend.uuid)" v-bind="$attrs"
-    >Remove</v-btn>
+      :url="'/solve-quiz/' + quiz.uuid"
+    >Solve</LinkButton>
   </v-list-tile-content>
   </v-flex>
 </v-list-tile>
@@ -34,24 +35,25 @@
 
 <script>
 import LinkButton from '@/components/LinkButton.vue'
-import { removeFriend } from '@/api/Friends'
 export default {
-  name: 'FriendsListTiles',
+  name: 'QuizzesListTiles',
   props: {
-    friends: {
+    quizzes: {
       type: Array
+    },
+    myQuizzes: {
+      type: Boolean
     }
   },
   components: {
     LinkButton
   },
   methods: {
-
-    handleRemoveFriend (uuid) {
-      removeFriend(uuid)
-    }
   }
 }
 </script>
 <style>
+.list-tile {
+  margin: 8%
+}
 </style>

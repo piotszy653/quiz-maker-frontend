@@ -2,83 +2,64 @@
     <v-flex md10 offset-md1>
     <v-card class="toolbar-card" flat>
       <v-toolbar prominent class="toolbar">
-        <v-toolbar-title class="toolbar-title">Assessments</v-toolbar-title>
+        <v-toolbar-title class="toolbar-title">Quizzes</v-toolbar-title>
         <v-spacer/>
          <v-toolbar-items>
-          <LinkButton url="/assessment" color="green" flat>Add</LinkButton>
+          <LinkButton url="/quiz" color="green" flat>Add</LinkButton>
           <LinkButton url="/dashboard" color="primary" flat>Main</LinkButton>
           <v-btn @click="handleLogout" color="red" flat>Log out</v-btn>
         </v-toolbar-items>
       </v-toolbar>
 
-      <v-list v-if="assessments">
-          <v-list-tile class="list-tile" v-for="assessment in this.assessments" :key="assessment.uuid">
-            <v-flex xs3>
-            <v-list-tile-content>
-                <b>{{assessment.name}}</b>
-            </v-list-tile-content>
-            </v-flex>
-            <v-spacer/>
-            <v-flex xs2>
-            <v-list-tile-content>
-              correct rate: {{assessment.correctRate}}
-              <br>
-              incorrect rate: {{assessment.incorrectRate}}
-            </v-list-tile-content>
-            </v-flex>
-            <v-spacer/>
-            <v-flex xs2>
-            <v-list-tile-content>
-              min points: {{assessment.minPoints}}
-              <br>
-              max points: {{assessment.maxPoints}}
-            </v-list-tile-content>
-            </v-flex>
-            <v-spacer/>
-            <v-flex xs2>
-            <v-list-tile-content>
-              <LinkButton small dark color="green" :url=" '/assessment/' + assessment.uuid">update</LinkButton>
-            </v-list-tile-content>
-            <v-list-tile-content>
-                <v-btn
-                small
-                color="red"
-                dark
-                @click="handleDeleteAssessment(assessment.uuid)" v-bind="$attrs"
-              >Remove</v-btn>
-            </v-list-tile-content>
-            </v-flex>
-          </v-list-tile>
-      </v-list>
+      <v-tabs dark centered hide-slider grow>
+          <v-tab class="gradient">My quizzes</v-tab>
+          <v-tab class="gradient">Available quizzes</v-tab>
+
+          <v-tab-item>
+            <v-list v-if="myQuizzes">
+              <QuizzesListTiles v-bind:quizzes="myQuizzes" v-bind:myQuizzes="true"/>
+            </v-list>
+          </v-tab-item>
+          <v-tab-item>
+              <v-list v-if="availableQuizzes">
+                <QuizzesListTiles v-bind:quizzes="availableQuizzes" v-bind:myQuizzes="false"/>
+            </v-list>
+          </v-tab-item>
+        </v-tabs>
+
     </v-card>
     </v-flex>
 </template>
 
 <script>
 import LinkButton from '@/components/LinkButton.vue'
-import { fetchAssessments, handleDeleteAssessment } from '@/api/Assessments'
+import QuizzesListTiles from './QuizzesListTiles'
+import { fetchOwnQuizzes, fetchAvailableQuizzes } from '@/api/Quiz.js'
 export default {
   name: 'Quizzes',
   data () {
     return {
-      assessments: []
+      myQuizzes: [],
+      availableQuizzes: []
     }
   },
   components: {
-    LinkButton
+    LinkButton,
+    QuizzesListTiles
   },
   methods: {
     handleLogout () {
       this.$emit('logout')
-    },
-    fetchAssessments,
-    handleDeleteAssessment
+    }
   },
   async created () {
     try {
-      this.assessments = await fetchAssessments()
-      this.assessments = this.assessments.sort((a, b) => a.creationTime < b.creationTime ? -1 : 1)
+      this.myQuizzes = await fetchOwnQuizzes()
+      this.myQuizzes = this.myQuizzes.sort((a, b) => a.creationTime > b.creationTime ? -1 : 1)
+      this.availableQuizzes = await fetchAvailableQuizzes()
+      this.availableQuizzes = this.availableQuizzes.sort((a, b) => a.creationTime > b.creationTime ? -1 : 1)
     } catch (error) {
+      console.log(error)
       this.$emit('tokenExpired')
     }
   }

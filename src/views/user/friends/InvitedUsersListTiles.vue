@@ -4,7 +4,7 @@
     <v-list-tile v-for="invitedUser in this.invitedUsers" :key="invitedUser.username">
       <v-flex xs6 sm4>
       <v-list-tile-content>
-          <b>{{invitedUser.profile.name}}</b> {{ invitedUser.username }}
+          <b>{{ invitedUser.username }}</b>
       </v-list-tile-content>
       </v-flex>
       <v-flex xs6 sm4>
