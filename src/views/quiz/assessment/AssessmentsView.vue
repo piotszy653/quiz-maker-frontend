@@ -77,7 +77,7 @@ export default {
   async created () {
     try {
       this.assessments = await fetchAssessments()
-      this.assessments = this.assessments.sort((a, b) => a.creationTime < b.creationTime ? -1 : 1)
+      this.assessments = this.assessments.sort((a, b) => a.name < b.name ? -1 : 1)
     } catch (error) {
       this.$emit('tokenExpired')
     }

@@ -4,7 +4,7 @@
   <v-flex xs6 sm4>
   <v-list-tile-content>
       <b>{{quiz.name}}</b>
-      Author: {{quiz.ownerUsername.split('@')[0]}}
+      {{quiz.ownerUsername}}
   </v-list-tile-content>
   </v-flex>
   <v-spacer/>
