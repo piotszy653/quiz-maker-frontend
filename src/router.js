@@ -9,6 +9,7 @@ import ResetPassword from './views/user/password/ResetPasswordView'
 import Assessments from './views/quiz/assessment/AssessmentsView'
 import Assessment from './views/quiz/assessment/AssessmentView'
 import Quizzes from './views/quiz/QuizzesView'
+import Quiz from './views/quiz/QuizView'
 
 Vue.use(Router)
 
@@ -72,6 +73,17 @@ export default new Router({
       path: '/quizzes',
       name: 'Quizzes',
       component: Quizzes
+    },
+    {
+      path: '/quiz/:quizUuid',
+      name: 'Update Quiz',
+      component: Quiz,
+      props: true
+    },
+    {
+      path: '/quiz',
+      name: 'Create Quiz',
+      component: Quiz
     }
   ]
 })

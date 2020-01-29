@@ -11,6 +11,15 @@ export async function fetchOwnQuizzes () {
   }
 }
 
+export async function fetchQuiz (uuid) {
+  try {
+    const response = await axios.get(quizzesUrl + '/' + uuid)
+    return response.data
+  } catch (error) {
+    errorHandling(error)
+  }
+}
+
 export async function fetchAvailableQuizzes () {
   try {
     const response = await axios.get(quizzesUrl + '/available')
@@ -20,11 +29,20 @@ export async function fetchAvailableQuizzes () {
   }
 }
 
+export async function handleRemoveQuestion (quizUuid, questionUuid) {
+  try {
+    const response = await axios.put(quizzesUrl + '/' + quizUuid, {
+      removedQuestionsUuids: [questionUuid]
+    })
+    return response.data
+  } catch (error) {
+    errorHandling(error)
+  }
+}
+
 function errorHandling (error) {
-  alert('errorHandling')
   if (error.response) {
     if (error.response.status === 401) {
-      alert('thrown ' + error.response.code)
       throw error
     } else {
       console.log(error)
