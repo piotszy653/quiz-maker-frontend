@@ -10,6 +10,8 @@ import Assessments from './views/quiz/assessment/AssessmentsView'
 import Assessment from './views/quiz/assessment/AssessmentView'
 import Quizzes from './views/quiz/QuizzesView'
 import Quiz from './views/quiz/QuizView'
+import Questions from './views/quiz/question/QuestionsView'
+import Question from './views/quiz/question/QuestionView'
 
 Vue.use(Router)
 
@@ -84,6 +86,22 @@ export default new Router({
       path: '/quiz',
       name: 'Create Quiz',
       component: Quiz
+    },
+    {
+      path: '/questions',
+      name: 'Questions',
+      component: Questions
+    },
+    {
+      path: '/question',
+      name: 'Create Question',
+      component: Question
+    },
+    {
+      path: '/question/:questionUuid',
+      name: 'Update Question',
+      component: Question,
+      props: true
     }
   ]
 })

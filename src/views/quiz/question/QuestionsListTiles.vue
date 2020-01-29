@@ -41,17 +41,25 @@
       small
       color="green"
       dark
-      :url="'/question/' + question.type + '/' + question.uuid"
+      :url="'/question/' + question.uuid"
     >Edit</LinkButton>
   </v-list-tile-content>
   <v-spacer/>
   <v-list-tile-content>
     <v-btn
+      v-if="quizUuid"
       small
       color="red"
       dark
       @click="handleRemoveQuestion(quizUuid, question.uuid)"
     >remove</v-btn>
+    <v-btn
+      v-else
+      small
+      color="red"
+      dark
+      @click="handleDeleteQuestion(question.type, question.uuid)"
+    >delete</v-btn>
   </v-list-tile-content>
   </v-flex>
 </v-list-tile>
@@ -61,6 +69,7 @@
 <script>
 import LinkButton from '@/components/LinkButton.vue'
 import { handleRemoveQuestion } from '@/api/Quiz'
+import { handleDeleteQuestion } from '@/api/Question'
 export default {
   name: 'QuestionsListTiles',
   props: {
@@ -73,7 +82,8 @@ export default {
     LinkButton
   },
   methods: {
-    handleRemoveQuestion
+    handleRemoveQuestion,
+    handleDeleteQuestion
   }
 }
 </script>
