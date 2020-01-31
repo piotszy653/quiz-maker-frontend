@@ -7,6 +7,7 @@
       <v-form v-if="this.questionUuid" class="form">
           <OpenQuestion v-if="this.questions.openQuestion && this.questionType === 'OPEN'" v-bind:question="this.questions.openQuestion"/>
            <TrueFalseQuestion v-else-if="this.questions.trueFalseQuestion && this.questionType === 'TRUE_FALSE'" v-bind:question="this.questions.trueFalseQuestion"/>
+           <TestQuestion v-else-if="this.questions.testQuestion && this.questionType === 'TEST'" v-bind:question="this.questions.testQuestion"/>
       </v-form>
 
       <v-form v-else class="form">
@@ -21,6 +22,7 @@
 
           <OpenQuestion v-if="questionType === 'open'"/>
           <TrueFalseQuestion v-else-if="questionType === 'true false'"/>
+          <TestQuestion v-else-if="questionType === 'test'"/>
       </v-form>
 
     </v-card>
@@ -31,6 +33,7 @@
 import TitleContainer from '@/components/TitleContainer'
 import OpenQuestion from './OpenQuestionView'
 import TrueFalseQuestion from './TrueFalseQuestionView'
+import TestQuestion from './TestQuestionView'
 import { fetchQuestion } from '@/api/Question'
 export default {
   name: 'Question',
@@ -48,6 +51,13 @@ export default {
           question: '',
           tags: [''],
           answer: null
+        },
+        testQuestion: {
+          uuid: '',
+          question: '',
+          tags: [''],
+          answers: [],
+          multipleChoice: false
         }
       },
       questionType: null,
@@ -66,7 +76,8 @@ export default {
   components: {
     TitleContainer,
     OpenQuestion,
-    TrueFalseQuestion
+    TrueFalseQuestion,
+    TestQuestion
   },
   methods: {
   },
@@ -87,6 +98,13 @@ export default {
             this.questions.trueFalseQuestion.question = response.question
             this.questions.trueFalseQuestion.tags = response.tags
             this.questions.trueFalseQuestion.answer = response.answer
+            break
+          case 'TEST':
+            this.questions.testQuestion.uuid = response.uuid
+            this.questions.testQuestion.question = response.question
+            this.questions.testQuestion.tags = response.tags
+            this.questions.testQuestion.answers = response.answers
+            this.questions.testQuestion.multipleChoice = response.multipleChoice
             break
         }
       }

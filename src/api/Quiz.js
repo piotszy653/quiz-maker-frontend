@@ -31,10 +31,10 @@ export async function fetchAvailableQuizzes () {
 
 export async function handleRemoveQuestion (quizUuid, questionUuid) {
   try {
-    const response = await axios.put(quizzesUrl + '/' + quizUuid, {
+    await axios.put(quizzesUrl + '/' + quizUuid, {
       removedQuestionsUuids: [questionUuid]
     })
-    return response.data
+    alert('Question removed')
   } catch (error) {
     errorHandling(error)
   }

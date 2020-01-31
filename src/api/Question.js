@@ -33,12 +33,41 @@ export async function handleCreateQuestion (question, questionType, tags) {
   }
 }
 
+export async function handleCreateTestQuestion (question, tags) {
+  try {
+    await axios.post(questionsUrl + '/test', {
+      question: question.question,
+      tags: tags.split(','),
+      answers: question.answers,
+      multipleChoice: question.multipleChoice
+    })
+    this.$router.push('/questions')
+  } catch (error) {
+    errorHandling(error)
+  }
+}
+
 export async function handleUpdateQuestion (question, questionType, tags) {
   try {
     await axios.put(questionsUrl + '/' + questionType + '/' + question.uuid, {
       question: question.question,
       tags: tags.split(','),
       answer: question.answer
+    })
+    this.$router.push('/questions')
+  } catch (error) {
+    errorHandling(error)
+  }
+}
+
+export async function handleUpdateTestQuestion (question, removedAnswersUuids, tags) {
+  try {
+    await axios.put(questionsUrl + '/test/' + question.uuid, {
+      question: question.question,
+      tags: tags.split(','),
+      answers: question.answers.filter(answer => !answer.uuid),
+      removedAnswersUuids,
+      multipleChoice: question.multipleChoice
     })
     this.$router.push('/questions')
   } catch (error) {
