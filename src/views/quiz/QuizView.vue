@@ -6,15 +6,49 @@
         <v-toolbar-title v-else class="toolbar-title">New Quiz</v-toolbar-title>
         <v-spacer/>
          <v-toolbar-items>
-          <LinkButton v-if="quizUuid" url="/question" color="green" flat>Add Question</LinkButton>
+          <LinkButton v-if="quizUuid" :url="`/questions/` + quizUuid" color="green" flat>Add Question</LinkButton>
+          <LinkButton url="/quizzes" color="primary" flat>Quizzes</LinkButton>
           <LinkButton url="/dashboard" color="primary" flat>Main</LinkButton>
           <v-btn @click="handleLogout" color="red" flat>Log out</v-btn>
         </v-toolbar-items>
       </v-toolbar>
 
+      <v-form class="form">
+        <v-flex sm6 offset-sm3>
+        <v-textarea
+            autofocus
+            filled
+            label="Name"
+            v-model="newQuiz.name"
+        ></v-textarea>
+        <v-select
+            v-model="newQuiz.privacyPolicy"
+            :items="privacyPolicies"
+            solo
+            label="Privacy Policy"
+            ></v-select>
+            <v-text-field label="Tags" hint="separated by ','" v-model="tags"></v-text-field>
+        </v-flex>
         <v-list v-if="quiz">
             <QuestionsListTiles v-bind:questions="quiz.questions" v-bind:quizUuid="quiz.uuid"/>
         </v-list>
+        <v-flex sm6 offset-sm3>
+        <v-btn
+          v-if="this.quiz"
+          @click="handleUpdateQuiz()"
+          block
+          dark
+          color="green"
+        >Update</v-btn>
+        <v-btn
+          v-else
+          @click="handleCreateQuiz(newQuiz, tags)"
+          block
+          dark
+          color="primary"
+        >Create</v-btn>
+        </v-flex>
+      </v-form>
 
     </v-card>
     </v-flex>
@@ -23,11 +57,18 @@
 <script>
 import LinkButton from '@/components/LinkButton.vue'
 import QuestionsListTiles from './question/QuestionsListTiles'
-import { fetchQuiz } from '@/api/Quiz.js'
+import { fetchQuiz, handleCreateQuiz } from '@/api/Quiz.js'
 export default {
   name: 'Quiz',
   data () {
     return {
+      tags: '',
+      privacyPolicies: ['PRIVATE', 'FRIENDS', 'PUBLIC'],
+      newQuiz: {
+        name: '',
+        privacyPolicy: '',
+        tags: ['']
+      },
       quiz: null
     }
   },
@@ -43,11 +84,19 @@ export default {
   methods: {
     handleLogout () {
       this.$emit('logout')
+    },
+    handleCreateQuiz,
+    handleUpdateQuiz () {
+
     }
   },
   async created () {
     try {
-      if (this.quizUuid) { this.quiz = await fetchQuiz(this.quizUuid) }
+      if (this.quizUuid) {
+        this.quiz = await fetchQuiz(this.quizUuid)
+        this.newQuiz = this.quiz
+        this.tags = this.quiz.tags.join(', ')
+      }
     } catch (error) {
       console.log(error)
       this.$emit('tokenExpired')
@@ -61,5 +110,8 @@ export default {
 }
 .list-tile {
     margin: 8%
+}
+.form {
+  padding: 8%;
 }
 </style>

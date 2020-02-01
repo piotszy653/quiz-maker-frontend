@@ -1,6 +1,6 @@
 <template>
 <div>
-    <v-list-tile class="list-tile-header" >
+    <v-list-tile class="list-tile-header" v-if="questions.length !== 0" >
   <v-flex xs6 sm3>
   <v-list-tile-content>
       <b>Type</b>
@@ -36,7 +36,7 @@
   </v-flex>
   <v-spacer/>
   <v-flex xs2>
-  <v-list-tile-content>
+  <v-list-tile-content v-if="!addToQuiz">
     <LinkButton
       small
       color="green"
@@ -45,7 +45,12 @@
     >Edit</LinkButton>
   </v-list-tile-content>
   <v-spacer/>
-  <v-list-tile-content>
+  <v-list-tile-content v-if="addToQuiz">
+    <v-checkbox
+      v-model="question.selected"
+    ></v-checkbox>
+  </v-list-tile-content>
+  <v-list-tile-content v-else>
     <v-btn
       v-if="quizUuid"
       small
@@ -63,12 +68,18 @@
   </v-list-tile-content>
   </v-flex>
 </v-list-tile>
+<v-btn
+  v-if="addToQuiz"
+  color="green"
+  dark
+  @click="handleAddQuestions()"
+>Add selected to Quiz</v-btn>
 </div>
 </template>
 
 <script>
 import LinkButton from '@/components/LinkButton.vue'
-import { handleRemoveQuestion } from '@/api/Quiz'
+import { handleRemoveQuestion, addQuestions } from '@/api/Quiz'
 import { handleDeleteQuestion } from '@/api/Question'
 export default {
   name: 'QuestionsListTiles',
@@ -76,14 +87,27 @@ export default {
     questions: {
       type: Array
     },
-    quizUuid: null
+    quizUuid: null,
+    addToQuiz: null
   },
   components: {
     LinkButton
   },
   methods: {
     handleRemoveQuestion,
-    handleDeleteQuestion
+    handleDeleteQuestion,
+    async handleAddQuestions () {
+      try {
+        await addQuestions(this.questions, this.quizUuid)
+        this.$router.push('/quiz/' + this.quizUuid)
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status === 401) {
+            this.$emit('tokenExpired')
+          }
+        }
+      }
+    }
   }
 }
 </script>

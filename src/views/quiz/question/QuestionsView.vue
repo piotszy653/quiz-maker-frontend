@@ -5,14 +5,24 @@
         <v-toolbar-title class="toolbar-title">Questions</v-toolbar-title>
         <v-spacer/>
          <v-toolbar-items>
-          <LinkButton url="/question" color="green" flat>Add</LinkButton>
+          <LinkButton v-if="!quizUuid" url="/question" color="green" flat>Create</LinkButton>
           <LinkButton url="/quizzes" color="primary" flat>Quizzes</LinkButton>
           <LinkButton url="/dashboard" color="primary" flat>Main</LinkButton>
           <v-btn @click="handleLogout" color="red" flat>Log out</v-btn>
         </v-toolbar-items>
       </v-toolbar>
-            <v-list v-if="questions">
-            <QuestionsListTiles v-bind:questions="questions"/>
+            <v-list>
+            <QuestionsListTiles
+            v-if="questions && quizUuid"
+            v-bind:questions="questions"
+            v-bind:quizUuid="quizUuid"
+            v-bind:addToQuiz="true"
+            />
+            <QuestionsListTiles
+            v-else-if="questions"
+            v-bind:questions="questions"
+            v-bind:addToQuiz="false"
+            />
         </v-list>
 
     </v-card>
@@ -29,6 +39,9 @@ export default {
     return {
       questions: []
     }
+  },
+  props: {
+    quizUuid: null
   },
   components: {
     LinkButton,

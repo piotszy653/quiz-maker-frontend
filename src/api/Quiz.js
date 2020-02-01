@@ -29,12 +29,35 @@ export async function fetchAvailableQuizzes () {
   }
 }
 
+export async function handleCreateQuiz (quiz, tags) {
+  try {
+    await axios.post(quizzesUrl, {
+      name: quiz.name,
+      privacyPolicy: quiz.privacyPolicy,
+      tags: tags.split(',')
+    })
+    this.$router.push('/quizzes')
+  } catch (error) {
+    errorHandling(error)
+  }
+}
+
 export async function handleRemoveQuestion (quizUuid, questionUuid) {
   try {
     await axios.put(quizzesUrl + '/' + quizUuid, {
       removedQuestionsUuids: [questionUuid]
     })
     alert('Question removed')
+  } catch (error) {
+    errorHandling(error)
+  }
+}
+
+export async function addQuestions (questions, quizUuid) {
+  try {
+    await axios.put(quizzesUrl + '/' + quizUuid, {
+      addedQuestionsUuids: questions.filter(question => question.selected).map(question => question.uuid)
+    })
   } catch (error) {
     errorHandling(error)
   }

@@ -93,6 +93,12 @@ export default new Router({
       component: Questions
     },
     {
+      path: '/questions/:quizUuid',
+      name: 'Add Questions to Quiz',
+      component: Questions,
+      props: true
+    },
+    {
       path: '/question',
       name: 'Create Question',
       component: Question
