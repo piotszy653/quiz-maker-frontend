@@ -76,6 +76,26 @@ export async function addQuestions (questions, quizUuid) {
   }
 }
 
+export async function addAssessment (quizUuid, assessments, questionType) {
+  try {
+    assessments = assessments.filter(assessments => assessments.selected)
+    if (assessments.length > 0) {
+      if (questionType === 'TRUE_FALSE') {
+        await axios.put(quizzesUrl + '/' + quizUuid, {
+          replacedAssessmentsUuids: { 'TRUE_FALSE': assessments[0].uuid }
+        })
+      }
+      if (questionType === 'TEST') {
+        await axios.put(quizzesUrl + '/' + quizUuid, {
+          replacedAssessmentsUuids: { 'TEST': assessments[0].uuid }
+        })
+      }
+    }
+  } catch (error) {
+    errorHandling(error)
+  }
+}
+
 function errorHandling (error) {
   if (error.response) {
     if (error.response.status === 401) {

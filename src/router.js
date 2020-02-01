@@ -61,6 +61,12 @@ export default new Router({
       component: Assessments
     },
     {
+      path: '/assessments/:quizUuid',
+      name: 'Add assessment to quiz',
+      component: Assessments,
+      props: true
+    },
+    {
       path: '/assessment/:assessmentUuid',
       name: 'Update Assessment',
       component: Assessment,

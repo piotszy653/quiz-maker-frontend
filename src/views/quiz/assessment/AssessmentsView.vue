@@ -12,6 +12,15 @@
       </v-toolbar>
 
       <v-list v-if="assessments">
+        <v-flex sm8 offset-sm2 md6 offset-md3>
+          <v-select
+              v-if="quizUuid"
+              v-model="questionType"
+              :items="questionTypes"
+              solo
+              label="Question type"
+            ></v-select>
+        </v-flex>
           <v-list-tile class="list-tile" v-for="assessment in this.assessments" :key="assessment.uuid">
             <v-flex xs3>
             <v-list-tile-content>
@@ -36,19 +45,32 @@
             </v-flex>
             <v-spacer/>
             <v-flex xs2>
-            <v-list-tile-content>
-              <LinkButton small dark color="green" :url=" '/assessment/' + assessment.uuid">update</LinkButton>
-            </v-list-tile-content>
-            <v-list-tile-content>
-                <v-btn
-                small
-                color="red"
-                dark
-                @click="handleDeleteAssessment(assessment.uuid)" v-bind="$attrs"
-              >Remove</v-btn>
-            </v-list-tile-content>
+              <v-list-tile-content v-if="quizUuid">
+                <v-checkbox
+                  v-model="assessment.selected"
+                ></v-checkbox>
+              </v-list-tile-content>
+            <div v-else>
+              <v-list-tile-content>
+                <LinkButton small dark color="green" :url=" '/assessment/' + assessment.uuid">update</LinkButton>
+              </v-list-tile-content>
+              <v-list-tile-content>
+                  <v-btn
+                  small
+                  color="red"
+                  dark
+                  @click="handleDeleteAssessment(assessment.uuid)" v-bind="$attrs"
+                >Remove</v-btn>
+              </v-list-tile-content>
+            </div>
             </v-flex>
           </v-list-tile>
+          <v-btn
+            v-if="quizUuid"
+            color="green"
+            dark
+            @click="handleAddAssessment()"
+          >Add selected to Quiz</v-btn>
       </v-list>
     </v-card>
     </v-flex>
@@ -57,12 +79,18 @@
 <script>
 import LinkButton from '@/components/LinkButton.vue'
 import { fetchAssessments, handleDeleteAssessment } from '@/api/Assessments'
+import { addAssessment } from '@/api/Quiz'
 export default {
   name: 'Assessments',
   data () {
     return {
+      questionTypes: ['TEST', 'TRUE_FALSE'],
+      questionType: null,
       assessments: []
     }
+  },
+  props: {
+    quizUuid: null
   },
   components: {
     LinkButton
@@ -72,7 +100,24 @@ export default {
       this.$emit('logout')
     },
     fetchAssessments,
-    handleDeleteAssessment
+    handleDeleteAssessment,
+    async handleAddAssessment () {
+      try {
+        if (this.questionType) {
+          await addAssessment(this.quizUuid, this.assessments, this.questionType)
+          this.$router.push('/quiz/' + this.quizUuid)
+        } else {
+          alert('Pick question type')
+        }
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status === 401) {
+            this.$emit('tokenExpired')
+          }
+        }
+        console.log(error)
+      }
+    }
   },
   async created () {
     try {

@@ -6,6 +6,7 @@
         <v-toolbar-title v-else class="toolbar-title">New Quiz</v-toolbar-title>
         <v-spacer/>
          <v-toolbar-items>
+          <LinkButton v-if="quizUuid" :url="`/assessments/` + quizUuid" color="green" flat>Add Assessment</LinkButton>
           <LinkButton v-if="quizUuid" :url="`/questions/` + quizUuid" color="green" flat>Add Question</LinkButton>
           <LinkButton url="/quizzes" color="primary" flat>Quizzes</LinkButton>
           <LinkButton url="/dashboard" color="primary" flat>Main</LinkButton>
@@ -29,9 +30,34 @@
             ></v-select>
             <v-text-field label="Tags" hint="separated by ','" v-model="tags"></v-text-field>
         </v-flex>
-        <v-list v-if="quiz">
-            <QuestionsListTiles v-bind:questions="quiz.questions" v-bind:quizUuid="quiz.uuid"/>
-        </v-list>
+        <v-card elevation="2">
+          <v-list>
+            <v-list-tile v-if="assessments.test || assessments.trueFalse">
+              Assessments
+            </v-list-tile>
+            <AssessmentListTile
+            v-if="assessments.test"
+            v-bind:assessment="assessments.test"
+            v-bind:questionType="'TEST'"
+            v-bind:quizUuid="quizUuid"
+            />
+            <AssessmentListTile
+            v-if="assessments.trueFalse"
+            v-bind:assessment="assessments.trueFalse"
+            v-bind:questionType="'TRUE FALSE'"
+            v-bind:quizUuid="quizUuid"
+            />
+          </v-list>
+        </v-card>
+        <br>
+        <v-card elevation="2">
+          <v-list v-if="quiz">
+            <v-list-tile v-if="quiz">
+              Questions
+            </v-list-tile>
+              <QuestionsListTiles v-bind:questions="quiz.questions" v-bind:quizUuid="quiz.uuid"/>
+          </v-list>
+        </v-card>
         <v-flex sm6 offset-sm3>
         <v-btn
           v-if="this.quiz"
@@ -57,6 +83,7 @@
 <script>
 import LinkButton from '@/components/LinkButton.vue'
 import QuestionsListTiles from './question/QuestionsListTiles'
+import AssessmentListTile from '@/views/quiz/assessment/AssessmentListTile'
 import { fetchQuiz, handleCreateQuiz, handleUpdateQuiz } from '@/api/Quiz.js'
 export default {
   name: 'Quiz',
@@ -64,7 +91,6 @@ export default {
     return {
       tags: '',
       assessments: {
-        open: null,
         trueFalse: null,
         test: null
       },
@@ -84,7 +110,8 @@ export default {
   },
   components: {
     LinkButton,
-    QuestionsListTiles
+    QuestionsListTiles,
+    AssessmentListTile
   },
   methods: {
     handleLogout () {
@@ -99,10 +126,20 @@ export default {
         this.quiz = await fetchQuiz(this.quizUuid)
         this.newQuiz = this.quiz
         this.tags = this.quiz.tags.join(', ')
+        if (this.quiz.assessments.TRUE_FALSE) {
+          this.assessments.trueFalse = this.quiz.assessments.TRUE_FALSE
+        }
+        if (this.quiz.assessments.TEST) {
+          this.assessments.test = this.quiz.assessments.TEST
+        }
       }
     } catch (error) {
       console.log(error)
-      this.$emit('tokenExpired')
+      if (error.response) {
+        if (error.response.status === 401) {
+          this.$emit('tokenExpired')
+        }
+      }
     }
   }
 }
