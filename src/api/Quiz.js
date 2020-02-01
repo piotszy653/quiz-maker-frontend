@@ -42,6 +42,19 @@ export async function handleCreateQuiz (quiz, tags) {
   }
 }
 
+export async function handleUpdateQuiz (quiz, tags) {
+  try {
+    await axios.put(quizzesUrl + '/' + quiz.uuid, {
+      name: quiz.name,
+      privacyPolicy: quiz.privacyPolicy,
+      tags: tags.split(',')
+    })
+    this.$router.push('/quizzes')
+  } catch (error) {
+    errorHandling(error)
+  }
+}
+
 export async function handleRemoveQuestion (quizUuid, questionUuid) {
   try {
     await axios.put(quizzesUrl + '/' + quizUuid, {

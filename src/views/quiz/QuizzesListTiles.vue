@@ -17,6 +17,13 @@
   <v-spacer/>
   <v-flex xs6 sm4>
   <v-list-tile-content>
+      <b>Privacy</b>
+      {{quiz.privacyPolicy}}
+  </v-list-tile-content>
+  </v-flex>
+  <v-spacer/>
+  <v-flex xs6 sm4>
+  <v-list-tile-content>
     <LinkButton v-if="myQuizzes"
     :url="'/quiz/'+ quiz.uuid"
       small
@@ -24,9 +31,6 @@
       dark
     >Edit</LinkButton>
   </v-list-tile-content>
-  </v-flex>
-  <v-spacer/>
-  <v-flex xs6 sm4>
   <v-list-tile-content>
     <LinkButton
       small

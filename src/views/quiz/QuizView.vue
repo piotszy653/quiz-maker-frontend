@@ -35,7 +35,7 @@
         <v-flex sm6 offset-sm3>
         <v-btn
           v-if="this.quiz"
-          @click="handleUpdateQuiz()"
+          @click="handleUpdateQuiz(newQuiz, tags)"
           block
           dark
           color="green"
@@ -57,12 +57,17 @@
 <script>
 import LinkButton from '@/components/LinkButton.vue'
 import QuestionsListTiles from './question/QuestionsListTiles'
-import { fetchQuiz, handleCreateQuiz } from '@/api/Quiz.js'
+import { fetchQuiz, handleCreateQuiz, handleUpdateQuiz } from '@/api/Quiz.js'
 export default {
   name: 'Quiz',
   data () {
     return {
       tags: '',
+      assessments: {
+        open: null,
+        trueFalse: null,
+        test: null
+      },
       privacyPolicies: ['PRIVATE', 'FRIENDS', 'PUBLIC'],
       newQuiz: {
         name: '',
@@ -86,9 +91,7 @@ export default {
       this.$emit('logout')
     },
     handleCreateQuiz,
-    handleUpdateQuiz () {
-
-    }
+    handleUpdateQuiz
   },
   async created () {
     try {
