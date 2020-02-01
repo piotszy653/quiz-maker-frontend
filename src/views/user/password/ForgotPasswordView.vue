@@ -1,7 +1,7 @@
 <template>
     <v-flex sm12 md10 offset-md1 lg8 offset-lg2>
       <v-card flat>
-        <TitleContainer title="Quiz Maker"/>
+        <TitleContainer title="Forgot password"/>
         <v-form class="form">
         <v-flex sm6 offset-sm3>
           <v-text-field v-model="mail" autofocus label="e-mail"></v-text-field>

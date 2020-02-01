@@ -6,6 +6,7 @@
         <v-spacer/>
          <v-toolbar-items>
           <LinkButton url="/quiz" color="green" flat>Create</LinkButton>
+          <LinkButton url="/assessments" color="primary" flat>Assessments</LinkButton>
           <LinkButton url="/questions" color="primary" flat>Questions</LinkButton>
           <LinkButton url="/dashboard" color="primary" flat>Main</LinkButton>
           <v-btn @click="handleLogout" color="red" flat>Log out</v-btn>
