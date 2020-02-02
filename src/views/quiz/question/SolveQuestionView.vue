@@ -6,20 +6,20 @@
           v-if="this.question.type === 'OPEN'"
           v-bind:question="this.question"
           :disabled="this.result"
-          solve=true
+          :solve="true"
           />
            <TrueFalseQuestion
            v-else-if="this.question.type === 'TRUE_FALSE'"
            v-bind:question="this.question"
            :disabled="this.result"
-           solve=true
+           :solve="true"
            :answer="this.answer"
            />
            <TestQuestion
            v-else-if="this.question.type === 'TEST'"
            v-bind:question="this.question"
            :disabled="this.result"
-           solve=true
+           :solve="true"
            :userAnswers="this.answer"
            />
       </v-form>
