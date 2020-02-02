@@ -5,23 +5,40 @@
       <v-form class="form">
         <v-flex sm8 offset-sm2 md10 offset-md1>
         <v-textarea
-            autofocus
+            clearable
+            auto-grow
             filled
             label="Question"
             v-model="newQuestion.question"
+            :disabled="this.disabled"
         ></v-textarea>
+        <v-flex xs2 v-if="solve && disabled">
+          Answer
         <v-switch
           color="primary"
           v-model="newQuestion.answer"
           :label="newQuestion.answer.toString()"
+          :disabled="this.disabled"
         ></v-switch>
         </v-flex>
-        <v-flex sm8 offset-sm2 md6 offset-md3>
-        <v-text-field label="Tags" hint="separated by ','" v-model="tags"></v-text-field>
+        <v-flex xs2 v-if="this.solve && this.newAnswer !== undefined && this.newAnswer !== null">
+          Your answer
+        <v-switch
+          color="primary"
+          v-model="newAnswer"
+          :label="newAnswer.toString()"
+          :disabled="this.disabled"
+        ></v-switch>
+        </v-flex>
         </v-flex>
         <v-flex sm8 offset-sm2 md6 offset-md3>
-        <v-btn v-if="this.question" @click="handleUpdateQuestion(newQuestion, 'true-false', tags)" block dark color="green">Update</v-btn>
-        <v-btn v-else @click="handleCreateQuestion(newQuestion, 'true-false', tags)" block dark color="primary">Create</v-btn>
+        <v-text-field v-if="!this.solve" label="Tags" hint="separated by ','" v-model="tags"></v-text-field>
+        </v-flex>
+        <v-flex sm8 offset-sm2 md6 offset-md3>
+          <div v-if="!this.solve">
+            <v-btn v-if="this.question" @click="handleUpdateQuestion(newQuestion, 'true-false', tags)" block dark color="green">Update</v-btn>
+            <v-btn v-else @click="handleCreateQuestion(newQuestion, 'true-false', tags)" block dark color="primary">Create</v-btn>
+          </div>
         </v-flex>
       </v-form>
 
@@ -35,6 +52,7 @@ export default {
   name: 'TrueFalseQuestion',
   data () {
     return {
+      newAnswer: false,
       tags: '',
       newQuestion: {
         uuid: '',
@@ -44,7 +62,16 @@ export default {
     }
   },
   props: {
-    question: null
+    question: null,
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    solve: {
+      type: Boolean,
+      default: false
+    },
+    answer: null
   },
   components: {
   },
@@ -56,6 +83,9 @@ export default {
     if (this.question) {
       this.newQuestion = this.question
       this.tags = this.question.tags.join(',')
+    }
+    if (this.question && this.disabled) {
+      this.newAnswer = this.answer
     }
   }
 }

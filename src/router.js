@@ -12,6 +12,8 @@ import Quizzes from './views/quiz/QuizzesView'
 import Quiz from './views/quiz/QuizView'
 import Questions from './views/quiz/question/QuestionsView'
 import Question from './views/quiz/question/QuestionView'
+import Results from './views/quiz/ResultsView'
+import ResultDetails from './views/quiz/ResultDetailsView'
 
 Vue.use(Router)
 
@@ -113,6 +115,17 @@ export default new Router({
       path: '/question/:questionUuid',
       name: 'Update Question',
       component: Question,
+      props: true
+    },
+    {
+      path: '/results',
+      name: 'Results',
+      component: Results
+    },
+    {
+      path: '/result/:resultUuid',
+      name: 'Result',
+      component: ResultDetails,
       props: true
     }
   ]

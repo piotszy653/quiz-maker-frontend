@@ -5,16 +5,18 @@
       <v-form class="form">
         <v-flex sm8 offset-sm2 md10 offset-md1>
         <v-textarea
-            autofocus
+            clearable
+            auto-grow
             filled
             label="Question"
             v-model="newQuestion.question"
+            :disabled="this.disabled"
         ></v-textarea>
         <v-list>
             <v-list-tile v-if="newQuestion.answers.length !== 0">
                 <v-flex md4>
                     <v-list-tile-content>
-                        <b>Answer</b>
+                        <b>Answers</b>
                     </v-list-tile-content>
                 </v-flex>
             </v-list-tile>
@@ -36,7 +38,28 @@
                     </v-list-tile-content>
                 </v-flex>
                 <v-spacer/>
-                <v-flex md4>
+                <v-flex md2 v-if="solve">
+                    <v-list-tile-content v-if="userAnswers">
+                      <v-text-field
+                        :disabled="disabled"
+                        :label="userAnswers.includes(answer.uuid) ? 'true' : 'false'"
+                        ></v-text-field>
+                    </v-list-tile-content>
+                </v-flex>
+                <v-spacer/>
+                <v-flex md2 v-if="solve">
+                    <v-list-tile-content v-if="userAnswers">
+                      <v-icon
+                        v-if="answer.correct && userAnswers.includes(answer.uuid) || !answer.correct && !userAnswers.includes(answer.uuid)"
+                       color="green"
+                       >done</v-icon>
+                       <v-icon
+                        v-else
+                       color="red"
+                       >clear</v-icon>
+                    </v-list-tile-content>
+                </v-flex>
+                <v-flex md4 v-else>
                     <v-list-tile-content>
                         <v-btn
                           small
@@ -47,7 +70,7 @@
                     </v-list-tile-content>
                 </v-flex>
             </v-list-tile>
-            <v-list-tile>
+            <v-list-tile v-if="!solve">
                 <v-flex md4>
                     <v-list-tile-content>
                         <v-text-field
@@ -81,15 +104,16 @@
             </v-list-tile>
         </v-list>
         <v-switch
+          v-if="!solve"
           color="primary"
           v-model="newQuestion.multipleChoice"
           label="Multiple choice"
         ></v-switch>
         </v-flex>
         <v-flex sm8 offset-sm2 md6 offset-md3>
-        <v-text-field label="Tags" hint="separated by ','" v-model="tags"></v-text-field>
+        <v-text-field v-if="!solve" label="Tags" hint="separated by ','" v-model="tags"></v-text-field>
         </v-flex>
-        <v-flex sm8 offset-sm2 md6 offset-md3>
+        <v-flex sm8 offset-sm2 md6 offset-md3 v-if="!solve">
         <v-btn v-if="this.question" @click="handleUpdateTestQuestion(newQuestion, removedAnswersUuids, tags)" block dark color="green">Update</v-btn>
         <v-btn v-else @click="handleCreateTestQuestion(newQuestion, tags)" block dark color="primary">Create</v-btn>
         </v-flex>
@@ -121,7 +145,16 @@ export default {
     }
   },
   props: {
-    question: null
+    question: null,
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    solve: {
+      type: Boolean,
+      default: false
+    },
+    userAnswers: null
   },
   components: {
   },
