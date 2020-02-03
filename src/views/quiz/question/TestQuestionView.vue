@@ -5,12 +5,12 @@
       <v-form class="form">
         <v-flex sm8 offset-sm2 md10 offset-md1>
         <v-textarea
-            clearable
+            :clearable="!this.solve"
             auto-grow
             filled
             label="Question"
             v-model="newQuestion.question"
-            :disabled="this.disabled"
+            :disabled="this.solve"
         ></v-textarea>
         <v-list>
             <v-list-tile v-if="newQuestion.answers.length !== 0">
@@ -30,7 +30,7 @@
                 <v-flex md4>
                     <v-list-tile-content>
                         <v-switch
-                            disabled
+                            :disabled="disabled"
                             color="primary"
                             v-model="answer.correct"
                             :label="answer.correct.toString()"
@@ -117,6 +117,10 @@
         <v-btn v-if="this.question" @click="handleUpdateTestQuestion(newQuestion, removedAnswersUuids, tags)" block dark color="green">Update</v-btn>
         <v-btn v-else @click="handleCreateTestQuestion(newQuestion, tags)" block dark color="primary">Create</v-btn>
         </v-flex>
+        <v-flex sm8 offset-sm2 md6 offset-md3 v-if="solve && !disabled">
+          <v-btn v-if="!this.lastQuestion" @click="handleSolvedQuestion" block dark color="green">Next Question</v-btn>
+          <v-btn v-else @click="handleSolvedQuestion" block dark color="red">Submit</v-btn>
+        </v-flex>
       </v-form>
 
     </v-card>
@@ -154,6 +158,10 @@ export default {
       type: Boolean,
       default: false
     },
+    lastQuestion: {
+      type: Boolean,
+      default: false
+    },
     userAnswers: null
   },
   components: {
@@ -171,11 +179,19 @@ export default {
       this.newQuestion.answers.push({ answer: this.newAnswer.answer, correct: this.newAnswer.correct })
       this.newAnswer.answer = ''
       this.newAnswer.correct = false
+    },
+    handleSolvedQuestion () {
+      this.$emit('solved', {
+        answers: this.newQuestion.answers.filter(answer => answer.correct).map(answer => answer.uuid)
+      })
     }
   },
   async created () {
     if (this.question) {
       this.newQuestion = this.question
+      if (this.solve && !this.userAnswers) {
+        this.newQuestion.answers.forEach((answer) => { answer.correct = false })
+      }
       this.tags = this.question.tags.join(',')
     }
   }

@@ -3,7 +3,7 @@
       <v-card class="card">
         <TitleContainer title="Quiz Maker"/>
         <v-form class="form">
-          <v-text-field v-model="username" autofocus label="Login"></v-text-field>
+          <v-text-field v-model="username" label="Login"></v-text-field>
           <v-text-field
             v-model="password"
             :append-icon="show ? 'visibility' : 'visibility_off'"

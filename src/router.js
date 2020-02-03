@@ -14,6 +14,7 @@ import Questions from './views/quiz/question/QuestionsView'
 import Question from './views/quiz/question/QuestionView'
 import Results from './views/quiz/ResultsView'
 import ResultDetails from './views/quiz/ResultDetailsView'
+import SolveQuiz from './views/quiz/SolveQuizView'
 
 Vue.use(Router)
 
@@ -126,6 +127,12 @@ export default new Router({
       path: '/result/:resultUuid',
       name: 'Result',
       component: ResultDetails,
+      props: true
+    },
+    {
+      path: '/solve-quiz/:quizUuid',
+      name: 'Solve quiz',
+      component: SolveQuiz,
       props: true
     }
   ]

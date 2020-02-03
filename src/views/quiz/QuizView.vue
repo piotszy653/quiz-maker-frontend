@@ -7,7 +7,7 @@
         <v-spacer/>
          <v-toolbar-items>
           <LinkButton v-if="quizUuid" :url="`/assessments/` + quizUuid" color="green" flat>Add Assessment</LinkButton>
-          <LinkButton v-if="quizUuid" :url="`/questions/` + quizUuid" color="green" flat>Add Question</LinkButton>
+          <LinkButton v-if="quizUuid" :url="`/questions/` + quizUuid" color="green" flat>Add Questions</LinkButton>
           <LinkButton url="/quizzes" color="primary" flat>Quizzes</LinkButton>
           <LinkButton url="/dashboard" color="primary" flat>Main</LinkButton>
           <v-btn @click="handleLogout" color="red" flat>Log out</v-btn>

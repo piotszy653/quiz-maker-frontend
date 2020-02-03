@@ -7,6 +7,8 @@
           v-bind:question="this.question"
           :disabled="this.result"
           :solve="true"
+          @solved="handleSolvedQuestion"
+          :lastQuestion="lastQuestion"
           />
            <TrueFalseQuestion
            v-else-if="this.question.type === 'TRUE_FALSE'"
@@ -14,6 +16,8 @@
            :disabled="this.result"
            :solve="true"
            :answer="this.answer"
+           @solved="handleSolvedQuestion"
+           :lastQuestion="lastQuestion"
            />
            <TestQuestion
            v-else-if="this.question.type === 'TEST'"
@@ -21,6 +25,8 @@
            :disabled="this.result"
            :solve="true"
            :userAnswers="this.answer"
+           @solved="handleSolvedQuestion"
+           :lastQuestion="lastQuestion"
            />
       </v-form>
     </v-card>
@@ -44,6 +50,10 @@ export default {
       type: Boolean,
       default: false
     },
+    lastQuestion: {
+      type: Boolean,
+      default: false
+    },
     question: null,
     answer: null
   },
@@ -53,6 +63,9 @@ export default {
     TestQuestion
   },
   methods: {
+    handleSolvedQuestion (response) {
+      this.$emit('solved', response)
+    }
   }
 }
 </script>

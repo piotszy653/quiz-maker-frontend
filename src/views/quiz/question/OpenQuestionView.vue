@@ -6,19 +6,19 @@
         <v-flex sm8 offset-sm2 md10 offset-md1>
         <v-textarea
             auto-grow
-            clearable
+            :clearable="!this.solve"
             filled
             label="Question"
             v-model="newQuestion.question"
-            :disabled="this.disabled"
+            :disabled="this.solve"
         ></v-textarea>
         <v-textarea
           filled
           auto-grow
-          clearable
+          :clearable="!this.solve"
           label="Answer"
           v-model="newQuestion.answer"
-          :disabled="this.disabled"
+          :disabled="this.solve"
         ></v-textarea>
         </v-flex>
         <v-flex sm8 offset-sm2 md6 offset-md3>
@@ -29,6 +29,10 @@
             <v-btn v-if="this.question" @click="handleUpdateQuestion(newQuestion, 'open', tags)" block dark color="green">Update</v-btn>
             <v-btn v-else @click="handleCreateQuestion(newQuestion, 'open', tags)" block dark color="primary">Create</v-btn>
           </div>
+        </v-flex>
+        <v-flex sm8 offset-sm2 md6 offset-md3 v-if="solve && !disabled">
+          <v-btn v-if="!this.lastQuestion" @click="handleSolvedQuestion" block dark color="green">Next Question</v-btn>
+          <v-btn v-else @click="handleSolvedQuestion" block dark color="red">Submit</v-btn>
         </v-flex>
       </v-form>
 
@@ -59,13 +63,20 @@ export default {
     solve: {
       type: Boolean,
       default: false
+    },
+    lastQuestion: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
   },
   methods: {
     handleCreateQuestion,
-    handleUpdateQuestion
+    handleUpdateQuestion,
+    handleSolvedQuestion () {
+      this.$emit('solved')
+    }
   },
   async created () {
     if (this.question) {
