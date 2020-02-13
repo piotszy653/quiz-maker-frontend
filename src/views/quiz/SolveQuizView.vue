@@ -46,6 +46,7 @@
 import SolveQuestion from '@/views/quiz/question/SolveQuestionView'
 import LinkButton from '@/components/LinkButton.vue'
 import { fetchQuiz } from '@/api/Quiz'
+import { createResult } from '@/api/Result'
 export default {
   name: 'SolveQuiz',
   data () {
@@ -79,25 +80,19 @@ export default {
         this.sendAnswers()
       }
     },
-    sendAnswers () {
-      alert('Here will be sending answers to backend')
-      this.$router.push('/result/' + this.quizUuid)
+    async sendAnswers () {
+      const result = await createResult(this.quizUuid, this.trueFalseAnswers, this.testAnswers)
+      this.$router.push('/result/' + result.uuid)
     },
     handleLogout () {
       this.$emit('logout')
     },
     handleSolvedTestQuestion (response) {
-      console.log(response)
-      console.log(this.testAnswers)
       this.testAnswers.push([this.question.uuid, response.answers])
-      console.log(this.testAnswers)
       this.nextQuestion()
     },
     handleSolvedTrueFalseQuestion (response) {
-      console.log(response)
-      console.log(this.trueFalseAnswers)
       this.trueFalseAnswers.push([this.question.uuid, response.answer])
-      console.log(this.trueFalseAnswers)
       this.nextQuestion()
     },
     handleSolvedOpenQuestion () {

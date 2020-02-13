@@ -81,7 +81,21 @@ export default {
     },
     answer: null
   },
-  components: {
+  computed: {
+    uuid () {
+      return this.question.uuid
+    }
+  },
+  watch: {
+    uuid: function () {
+      if (this.question) {
+        this.newQuestion = this.question
+        this.tags = this.question.tags.join(',')
+      }
+      if (this.question && this.disabled) {
+        this.newAnswer = this.answer
+      }
+    }
   },
   methods: {
     handleCreateQuestion,
@@ -92,7 +106,17 @@ export default {
       })
     }
   },
-  async created () {
+
+  async mounted () {
+    if (this.question) {
+      this.newQuestion = this.question
+      this.tags = this.question.tags.join(',')
+    }
+    if (this.question && this.disabled) {
+      this.newAnswer = this.answer
+    }
+  },
+  async beforeUpdate () {
     if (this.question) {
       this.newQuestion = this.question
       this.tags = this.question.tags.join(',')

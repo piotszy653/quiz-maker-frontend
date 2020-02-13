@@ -20,6 +20,23 @@ export async function fetchResult (uuid) {
   }
 }
 
+export async function createResult (quizUuid, trueFalseAnswers, testAnswers) {
+  try {
+    console.log(trueFalseAnswers)
+    console.log(testAnswers)
+    const response = await axios.post(resultsUrl, {
+      quizUuid,
+      trueFalseAnswers: trueFalseAnswers === [] ? null : trueFalseAnswers,
+      testAnswers: testAnswers === [] ? null : testAnswers
+    })
+    alert(response.data.uuid)
+    return response.data
+  } catch (error) {
+    console.log(error)
+    errorHandling(error)
+  }
+}
+
 function errorHandling (error) {
   if (error.response) {
     if (error.response.status === 401) {

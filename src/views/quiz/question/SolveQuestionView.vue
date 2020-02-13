@@ -4,7 +4,7 @@
       <v-form v-if="this.question" class="form">
           <OpenQuestion
           v-if="this.question.type === 'OPEN'"
-          v-bind:question="this.question"
+          :question="this.question"
           :disabled="this.result"
           :solve="true"
           @solved="handleSolvedQuestion"
@@ -12,7 +12,7 @@
           />
            <TrueFalseQuestion
            v-else-if="this.question.type === 'TRUE_FALSE'"
-           v-bind:question="this.question"
+           :question="question"
            :disabled="this.result"
            :solve="true"
            :answer="this.answer"
@@ -21,7 +21,7 @@
            />
            <TestQuestion
            v-else-if="this.question.type === 'TEST'"
-           v-bind:question="this.question"
+           :question="this.question"
            :disabled="this.result"
            :solve="true"
            :userAnswers="this.answer"
