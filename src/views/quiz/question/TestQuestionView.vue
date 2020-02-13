@@ -212,7 +212,7 @@ export default {
   async beforeUpdate () {
     if (this.question) {
       this.newQuestion = this.question
-      if (this.solve && !this.userAnswers) {
+      if (this.solve && !this.userAnswers && this.disabled) {
         this.newQuestion.answers.forEach((answer) => { answer.correct = false })
       }
       this.tags = this.question.tags.join(',')
