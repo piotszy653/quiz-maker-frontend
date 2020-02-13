@@ -1,8 +1,22 @@
 <template>
 <div>
   <v-list-tile class="list-tile">
+    <v-flex xs3>
+      <v-text-field
+      placeholder="name"
+      :v-model="nameFilter"
+      />
+    </v-flex>
+    <v-spacer/>
+    <v-flex xs3>
+      <v-text-field placeholder="author"/>
+    </v-flex>
+    <v-spacer/>
+    <v-flex xs3>
+      <v-text-field placeholder="tags" hint="separated by ','"/>
+    </v-flex>
   </v-list-tile>
-  <v-list-tile class="list-tile" v-for="quiz in this.quizzes" :key="quiz.uuid">
+  <v-list-tile class="list-tile" v-for="quiz in this.computedQuizzes" :key="quiz.uuid">
     <v-flex xs6 sm4>
     <v-list-tile-content>
         <b>{{quiz.name}}</b>
@@ -50,6 +64,24 @@
 import LinkButton from '@/components/LinkButton.vue'
 export default {
   name: 'QuizzesListTiles',
+  data () {
+    return {
+      nameFilter: '',
+      authorFilter: '',
+      tagFilter: ''
+    }
+  },
+  computed: {
+    computedQuizzes: function () {
+      alert('computing')
+      return this.quizzes.filter((quiz) => quiz.name.includes(this.nameFilter))
+    }
+  },
+  watch: {
+    nameFilter: function () {
+      return this.nameFilter
+    }
+  },
   props: {
     quizzes: {
       type: Array
