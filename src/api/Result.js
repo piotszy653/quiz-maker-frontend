@@ -22,14 +22,20 @@ export async function fetchResult (uuid) {
 
 export async function createResult (quizUuid, trueFalseAnswers, testAnswers) {
   try {
-    console.log(trueFalseAnswers)
-    console.log(testAnswers)
+    let trueFalseAnswersPost = {}
+    for (let answer of trueFalseAnswers) {
+      trueFalseAnswersPost[answer[0]] = answer[1]
+    }
+    let testAnswersPost = {}
+    for (let answer of testAnswers) {
+      testAnswersPost[answer[0]] = answer[1]
+    }
+
     const response = await axios.post(resultsUrl, {
       quizUuid,
-      trueFalseAnswers: trueFalseAnswers === [] ? null : trueFalseAnswers,
-      testAnswers: testAnswers === [] ? null : testAnswers
+      trueFalseAnswers: trueFalseAnswers === [] ? null : trueFalseAnswersPost,
+      testAnswers: testAnswers === [] ? null : testAnswersPost
     })
-    alert(response.data.uuid)
     return response.data
   } catch (error) {
     console.log(error)
