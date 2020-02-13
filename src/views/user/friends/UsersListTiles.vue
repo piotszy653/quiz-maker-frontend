@@ -1,6 +1,15 @@
 <template>
 <div>
-  <v-list-tile v-for="user in this.users" :key="user.username">
+  <v-list-tile>
+    <v-flex xs3>
+      <v-text-field
+      class="filter-field"
+      placeholder="username"
+      v-model="usernameFilter"
+      />
+    </v-flex>
+</v-list-tile>
+  <v-list-tile v-for="user in this.computedUsers" :key="user.username">
     <v-flex xs6 sm4>
     <v-list-tile-content>
         <b>{{user.username}}</b>
@@ -37,6 +46,16 @@ import LinkButton from '@/components/LinkButton.vue'
 import { invite } from '@/api/Friends'
 export default {
   name: 'UsersListTiles',
+  data () {
+    return {
+      usernameFilter: ''
+    }
+  },
+  computed: {
+    computedUsers: function () {
+      return this.users.filter((user) => user.username.includes(this.usernameFilter))
+    }
+  },
   props: {
     users: {
       type: Array

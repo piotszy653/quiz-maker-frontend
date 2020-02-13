@@ -1,6 +1,15 @@
 <template>
 <div>
-<v-list-tile v-for="friend in this.friends" :key="friend.username">
+<v-list-tile>
+    <v-flex xs3>
+      <v-text-field
+      class="filter-field"
+      placeholder="username"
+      v-model="usernameFilter"
+      />
+    </v-flex>
+</v-list-tile>
+<v-list-tile v-for="friend in this.computedFriends" :key="friend.username">
   <v-flex xs6 sm4>
   <v-list-tile-content>
       <b>{{friend.username}}</b>
@@ -37,6 +46,18 @@ import LinkButton from '@/components/LinkButton.vue'
 import { removeFriend } from '@/api/Friends'
 export default {
   name: 'FriendsListTiles',
+  data () {
+    return {
+      usernameFilter: ''
+    }
+  },
+  computed: {
+    computedFriends: function () {
+      return this.friends.filter((friend) =>
+        friend.username.includes(this.usernameFilter)
+      )
+    }
+  },
   props: {
     friends: {
       type: Array
@@ -54,4 +75,7 @@ export default {
 }
 </script>
 <style>
+.filter-field {
+  margin-right: 5%
+}
 </style>
