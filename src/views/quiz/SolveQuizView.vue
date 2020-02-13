@@ -14,7 +14,7 @@
       </v-toolbar>
 
       <v-container v-if="question">
-          <v-card>
+          <v-card flat>
             <SolveQuestion
             v-if="question.type === 'OPEN'"
             :result="false"

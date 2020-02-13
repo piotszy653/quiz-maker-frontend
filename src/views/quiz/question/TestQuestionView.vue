@@ -33,7 +33,6 @@
                             :disabled="disabled"
                             color="primary"
                             v-model="answer.correct"
-                            :label="answer.correct.toString()"
                         ></v-checkbox>
                     </v-list-tile-content>
                 </v-flex>
@@ -42,7 +41,7 @@
                     <v-list-tile-content v-if="userAnswers">
                       <v-text-field
                         :disabled="disabled"
-                        :label="userAnswers.includes(answer.uuid) ? 'true' : 'false'"
+                        :value="userAnswers.includes(answer.uuid) ? 'true' : 'false'"
                         ></v-text-field>
                     </v-list-tile-content>
                 </v-flex>
@@ -83,11 +82,10 @@
                 <v-spacer/>
                 <v-flex md4>
                     <v-list-tile-content>
-                        <v-switch
+                        <v-checkbox
                             color="primary"
                             v-model="newAnswer.correct"
-                            :label="newAnswer.correct.toString()"
-                        ></v-switch>
+                        ></v-checkbox>
                     </v-list-tile-content>
                 </v-flex>
                 <v-spacer/>
@@ -103,12 +101,12 @@
                 </v-flex>
             </v-list-tile>
         </v-list>
-        <v-switch
+        <v-checkbox
           v-if="!solve"
           color="primary"
           v-model="newQuestion.multipleChoice"
           label="Multiple choice"
-        ></v-switch>
+        ></v-checkbox>
         </v-flex>
         <v-flex sm8 offset-sm2 md6 offset-md3>
         <v-text-field v-if="!solve" label="Tags" hint="separated by ','" v-model="tags"></v-text-field>

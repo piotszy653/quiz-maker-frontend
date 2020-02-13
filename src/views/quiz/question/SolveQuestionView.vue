@@ -1,6 +1,6 @@
 <template>
     <v-flex md10 offset-md1>
-    <v-card>
+    <v-card flat>
       <v-form v-if="this.question" class="form">
           <OpenQuestion
           v-if="this.question.type === 'OPEN'"
