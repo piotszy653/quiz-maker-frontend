@@ -1,6 +1,6 @@
 <template>
     <v-flex md10 offset-md1>
-    <v-card class="toolbar-card" flat>
+    <v-card class="toolbar-card">
 
       <v-form class="form">
         <v-flex sm8 offset-sm2 md10 offset-md1>

@@ -12,8 +12,8 @@
       </v-toolbar>
 
       <v-container v-if="result">
-        Points: {{result.points}}
-          <v-card v-for="question in result.quiz.questions" :key="question.uuid">
+        Points: {{result.points}}/{{result.maxPoints}}
+          <v-card flat v-for="question in result.quiz.questions" :key="question.uuid">
             <SolveQuestion
             v-if="question.type === 'OPEN'"
             :result="true"
