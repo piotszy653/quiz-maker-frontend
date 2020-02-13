@@ -1,46 +1,48 @@
 <template>
 <div>
-<v-list-tile class="list-tile" v-for="quiz in this.quizzes" :key="quiz.uuid">
-  <v-flex xs6 sm4>
-  <v-list-tile-content>
-      <b>{{quiz.name}}</b>
-      {{quiz.ownerUsername}}
-  </v-list-tile-content>
-  </v-flex>
-  <v-spacer/>
-  <v-flex xs6 sm4>
-  <v-list-tile-content>
-      <b>Tags</b>
-      {{quiz.tags.join(', ')}}
-  </v-list-tile-content>
-  </v-flex>
-  <v-spacer/>
-  <v-flex xs6 sm4>
-  <v-list-tile-content>
-      <b>Privacy</b>
-      {{quiz.privacyPolicy}}
-  </v-list-tile-content>
-  </v-flex>
-  <v-spacer/>
-  <v-flex xs6 sm4>
-  <v-list-tile-content>
-    <LinkButton v-if="myQuizzes"
-    :url="'/quiz/'+ quiz.uuid"
-      small
-      color="green"
-      dark
-    >Edit</LinkButton>
-  </v-list-tile-content>
-  <v-list-tile-content>
-    <LinkButton
-      small
-      color="primary"
-      dark
-      :url="'/solve-quiz/' + quiz.uuid"
-    >Solve</LinkButton>
-  </v-list-tile-content>
-  </v-flex>
-</v-list-tile>
+  <v-list-tile class="list-tile">
+  </v-list-tile>
+  <v-list-tile class="list-tile" v-for="quiz in this.quizzes" :key="quiz.uuid">
+    <v-flex xs6 sm4>
+    <v-list-tile-content>
+        <b>{{quiz.name}}</b>
+        {{quiz.ownerUsername}}
+    </v-list-tile-content>
+    </v-flex>
+    <v-spacer/>
+    <v-flex xs6 sm4>
+    <v-list-tile-content>
+        <b>Tags</b>
+        {{quiz.tags.join(', ')}}
+    </v-list-tile-content>
+    </v-flex>
+    <v-spacer/>
+    <v-flex xs6 sm4>
+    <v-list-tile-content>
+        <b>Privacy</b>
+        {{quiz.privacyPolicy}}
+    </v-list-tile-content>
+    </v-flex>
+    <v-spacer/>
+    <v-flex xs6 sm4>
+    <v-list-tile-content>
+      <LinkButton v-if="myQuizzes"
+      :url="'/quiz/'+ quiz.uuid"
+        small
+        color="green"
+        dark
+      >Edit</LinkButton>
+    </v-list-tile-content>
+    <v-list-tile-content>
+      <LinkButton
+        small
+        color="primary"
+        dark
+        :url="'/solve-quiz/' + quiz.uuid"
+      >Solve</LinkButton>
+    </v-list-tile-content>
+    </v-flex>
+  </v-list-tile>
 </div>
 </template>
 

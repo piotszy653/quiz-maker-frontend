@@ -29,12 +29,12 @@
                 <v-spacer/>
                 <v-flex md4>
                     <v-list-tile-content>
-                        <v-switch
+                        <v-checkbox
                             :disabled="disabled"
                             color="primary"
                             v-model="answer.correct"
                             :label="answer.correct.toString()"
-                        ></v-switch>
+                        ></v-checkbox>
                     </v-list-tile-content>
                 </v-flex>
                 <v-spacer/>

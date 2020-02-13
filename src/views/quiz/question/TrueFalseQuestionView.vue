@@ -5,12 +5,12 @@
       <v-form class="form">
         <v-flex sm8 offset-sm2 md10 offset-md1>
         <v-textarea
-            :clearable="!this.disabled"
+            :clearable="!this.solve"
             auto-grow
             filled
             label="Question"
             v-model="newQuestion.question"
-            :disabled="this.disabled"
+            :disabled="this.solve"
         ></v-textarea>
         <v-flex xs2 v-if="!solve || solve && disabled">
           Answer
