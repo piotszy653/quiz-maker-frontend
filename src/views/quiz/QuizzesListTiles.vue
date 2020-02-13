@@ -3,17 +3,16 @@
   <v-list-tile class="list-tile">
     <v-flex xs3>
       <v-text-field
+      class="filter-field"
       placeholder="name"
-      :v-model="nameFilter"
+      v-model="nameFilter"
       />
     </v-flex>
-    <v-spacer/>
     <v-flex xs3>
-      <v-text-field placeholder="author"/>
-    </v-flex>
-    <v-spacer/>
-    <v-flex xs3>
-      <v-text-field placeholder="tags" hint="separated by ','"/>
+      <v-text-field
+      placeholder="author"
+      v-model="authorFilter"
+      />
     </v-flex>
   </v-list-tile>
   <v-list-tile class="list-tile" v-for="quiz in this.computedQuizzes" :key="quiz.uuid">
@@ -67,19 +66,15 @@ export default {
   data () {
     return {
       nameFilter: '',
-      authorFilter: '',
-      tagFilter: ''
+      authorFilter: ''
     }
   },
   computed: {
     computedQuizzes: function () {
-      alert('computing')
-      return this.quizzes.filter((quiz) => quiz.name.includes(this.nameFilter))
-    }
-  },
-  watch: {
-    nameFilter: function () {
-      return this.nameFilter
+      return this.quizzes.filter((quiz) =>
+        quiz.name.includes(this.nameFilter) &&
+        quiz.ownerUsername.includes(this.authorFilter)
+      )
     }
   },
   props: {
@@ -100,5 +95,8 @@ export default {
 <style>
 .list-tile {
   margin: 8%
+}
+.filter-field {
+  margin-right: 5%
 }
 </style>
